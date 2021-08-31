@@ -1,9 +1,18 @@
 {
-  "admin-example.navigation.label-group": "Admins de ejemplo",
-  "admin-example.navigation.label-table": "Ejemplo de tabela",
-  "admin-example.navigation.search.kws": "teste, mock, fake",
-  "admin-example.navigation.details.search.kws": "detalhe, mock, test, oi",
-  "admin-example.navigation.table.search.kws": "tabela, mock, test, tchau",
-  "admin-example.hello-world": "Admin de ejemplo",
-  "admin-example.details": "Página de detalles"
+  "admin/admin.app.navigation.title": "Ordenes Farmacéuticas",
+  "admin/admin.app.navigation.search.kws": "orden, ordenes, farma, farmaceuticas, orderId",
+  "admin/admin.app.pharma-orders.textOf": "de",
+  "admin/admin.app.pharma-orders.textShowRows": "Mostrar filas",
+  "admin/admin.app.pharma-orders.filterClear": "Limpiar Filtros",
+  "admin/admin.app.pharma-orders.filterAll": "Todos",
+  "admin/admin.app.pharma-orders.filterNone": "Ninguno",
+  "admin/admin.app.pharma-orders.filterAny": "Cualquiera",
+  "admin/admin.app.pharma-orders.filterIs": "igual",
+  "admin/admin.app.pharma-orders.filterIsNot": "no igual",
+  "admin/admin.app.pharma-orders.filterContains": "contiene",
+  "admin/admin.app.pharma-orders.filterApply": "Aplicar",
+  "admin/admin.app.pharma-orders.orderId": "OrderId",
+  "admin/admin.app.pharma-orders.selectedOrders": "Ordenes Selecionadas:",
+  "admin/admin.app.pharma-orders.selectAllOrders": "Seleccione Todas",
+  "admin/admin.app.pharma-orders.pageTitle": "Ordenes Farmacéuticas"
 }

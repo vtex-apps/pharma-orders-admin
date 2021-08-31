@@ -1,13 +1,12 @@
 {
   "section": "orders",
-  "titleId": "admin-example.navigation.label-group",
-  "subSection": "example",
-  "searchKeyWordsHelpers": "admin-example.navigation.search.kws",
+  "subSection": "delivery",
   "subSectionItems": [
     {
-      "labelId": "admin-example.navigation.label-table",
-      "path": "/admin/example",
-      "searchKeyWordsHelpers": "admin-example.navigation.table.search.kws"
+      "isNew": true,
+      "labelId": "admin/admin.app.navigation.title",
+      "path": "/admin/pharma-orders"
     }
-  ]
+  ],
+  "searchKeyWordsHelpers": "admin/admin.app.navigation.search.kws"
 }
