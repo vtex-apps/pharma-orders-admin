@@ -14,5 +14,8 @@
   "admin/admin.app.pharma-orders.orderId": "OrderId",
   "admin/admin.app.pharma-orders.selectedOrders": "Selected orders:",
   "admin/admin.app.pharma-orders.selectAllOrders": "Select All",
-  "admin/admin.app.pharma-orders.pageTitle": "Pharma Orders"
+  "admin/admin.app.pharma-orders.pageTitle": "Pharma Orders",
+  "admin/admin.app.pharma-orders.approve": "Approve",
+  "admin/admin.app.pharma-orders.confirm": "Confirm",
+  "admin/admin.app.pharma-orders.cancel": "Cancel"
 }

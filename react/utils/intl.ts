@@ -17,4 +17,7 @@ export const titlesIntl = defineMessages({
   selectedOrders: { id: `${prefix}selectedOrders` },
   selectAllOrders: { id: `${prefix}selectAllOrders` },
   pageTitle: { id: `${prefix}pageTitle` },
+  approve: { id: `${prefix}approve` },
+  confirm: { id: `${prefix}confirm` },
+  cancel: { id: `${prefix}cancel` },
 })

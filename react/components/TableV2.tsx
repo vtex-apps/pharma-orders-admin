@@ -50,39 +50,67 @@ export default function TableV2({ orderList }: TableProps) {
     items,
   })
 
-  const action1 = {
-    label: 'action1',
-    onClick: () => handleAction(checkboxes.checkedItems),
+  const approveAction = {
+    label: intl.formatMessage(titlesIntl.approve),
+    onClick: () => handleApproveAction(checkboxes.checkedItems),
   }
 
-  const action2 = {
-    label: 'action2',
-    onClick: () => handleAction(checkboxes.checkedItems),
+  const confirmAction = {
+    label: intl.formatMessage(titlesIntl.confirm),
+    onClick: () => handleConfirmAction(checkboxes.checkedItems),
   }
 
-  async function handleAction(selectedRows: any) {
-    console.info('handleAction selectedRows', selectedRows)
+  const cancelAction = {
+    label: intl.formatMessage(titlesIntl.cancel),
+    onClick: () => handleCancelAction(checkboxes.checkedItems),
   }
 
-  const ITEMS_PER_PAGE = 5
+  async function handleApproveAction(selectedRows: any) {
+    console.info('handleApproveAction selectedRows', selectedRows)
+  }
 
-  const measures = useTableMeasures({ size: ITEMS_PER_PAGE })
+  async function handleConfirmAction(selectedRows: any) {
+    console.info('handleConfirmAction selectedRows', selectedRows)
+  }
+
+  async function handleCancelAction(selectedRows: any) {
+    console.info('handleCancelAction selectedRows', selectedRows)
+  }
 
   const [filteredItems, setFilteredItems] = useState(items)
   const [filterStatements, setFilterStatements] = useState([])
+
+  const ITEMS_PER_PAGE = 5
 
   const { slicedItems, ...paginationProps } = usePagination(
     ITEMS_PER_PAGE,
     filteredItems
   )
 
+  const listOfRowsOptions: number[] = [5]
+
+  if (filteredItems.length >= 5) {
+    listOfRowsOptions.push(10)
+    if (filteredItems.length >= 10) {
+      listOfRowsOptions.push(15)
+    }
+  }
+
   const pagination = {
     ...paginationProps,
     textOf: intl.formatMessage(titlesIntl.textOf),
-    rowsOptions: [5, 10, 15],
+    rowsOptions: listOfRowsOptions,
     textShowRows: intl.formatMessage(titlesIntl.textShowRows),
     totalItems: filteredItems.length,
   }
+
+  const measures = useTableMeasures({
+    size:
+      pagination.totalItems < pagination.tableSize
+        ? pagination.totalItems
+        : pagination.tableSize,
+    density: 'comfortable',
+  })
 
   function handleFiltersChange(statements = []) {
     let newData = items.slice()
@@ -201,8 +229,9 @@ export default function TableV2({ orderList }: TableProps) {
       >
         <Table.Bulk active={checkboxes.someChecked}>
           <Table.Bulk.Actions>
-            <Table.Bulk.Actions.Primary {...action1} />
-            <Table.Bulk.Actions.Primary {...action2} />
+            <Table.Bulk.Actions.Primary {...approveAction} />
+            <Table.Bulk.Actions.Primary {...confirmAction} />
+            <Table.Bulk.Actions.Primary {...cancelAction} />
           </Table.Bulk.Actions>
           <Table.Bulk.Tail>
             {!checkboxes.allChecked && (
