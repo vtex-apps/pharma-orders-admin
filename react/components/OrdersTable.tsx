@@ -14,24 +14,24 @@ import React, { useState, useEffect, useCallback } from 'react'
 import { useIntl } from 'react-intl'
 
 import { titlesIntl } from '../utils/intl'
-import ProductTable from './ProductTable'
+import ProductsTable from './ProductsTable'
 
-export default function TableV2({ orderList }: TableProps) {
+export default function OrdersTable({ orderList }: TableProps) {
   const intl = useIntl()
   const items = orderList
 
   const columns = [
     {
       id: 'status',
-      title: 'Status',
+      title: intl.formatMessage(titlesIntl.ordersTableStatus),
     },
     {
       id: 'orderId',
-      title: intl.formatMessage(titlesIntl.orderId),
+      title: intl.formatMessage(titlesIntl.ordersTableOrderId),
     },
     {
       id: 'products',
-      title: 'Products',
+      title: intl.formatMessage(titlesIntl.ordersTableProducts),
       cellRenderer: ({ data }: any) => {
         return (
           <div>
@@ -169,7 +169,7 @@ export default function TableV2({ orderList }: TableProps) {
     submitFilterLabel: filterApply,
     options: {
       orderId: {
-        label: intl.formatMessage(titlesIntl.orderId),
+        label: intl.formatMessage(titlesIntl.ordersTableOrderId),
         ...simpleInputVerbsAndLabel(),
       },
     },
@@ -270,7 +270,7 @@ export default function TableV2({ orderList }: TableProps) {
         isOpen={isProductModalOpen}
         onClose={() => handleModalToggle(null)}
       >
-        <ProductTable orderId={orderIdToModal} />
+        <ProductsTable orderId={orderIdToModal} />
       </Modal>
     </div>
   )

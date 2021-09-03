@@ -8,7 +8,7 @@ import getOrder from '../graphql/getOrder.gql'
 import LoadingSpinner from './LoadingSpinner'
 import { titlesIntl } from '../utils/intl'
 
-export default function ProductTable({ orderId }: ProductTableProps) {
+export default function ProductsTable({ orderId }: ProductTableProps) {
   const intl = useIntl()
 
   const responseFromGetOrder = useQuery(getOrder, {

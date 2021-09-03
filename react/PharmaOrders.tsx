@@ -3,7 +3,7 @@ import { Layout, PageHeader, PageBlock } from 'vtex.styleguide'
 import { useIntl } from 'react-intl'
 import { useQuery } from 'react-apollo'
 
-import TableV2 from './components/TableV2'
+import OrdersTable from './components/OrdersTable'
 import { titlesIntl } from './utils/intl'
 import getData from './graphql/getData.gql'
 import LoadingSpinner from './components/LoadingSpinner'
@@ -45,7 +45,7 @@ export default function PharmaOrders() {
       }
     >
       <PageBlock variation="full">
-        {orderList?.length > 0 && <TableV2 orderList={orderList} />}
+        {orderList?.length > 0 && <OrdersTable orderList={orderList} />}
         {!orderList && <LoadingSpinner />}
       </PageBlock>
     </Layout>
