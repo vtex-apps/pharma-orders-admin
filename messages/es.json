@@ -11,7 +11,7 @@
   "admin/admin.app.pharma-orders.filterIsNot": "no igual",
   "admin/admin.app.pharma-orders.filterContains": "contiene",
   "admin/admin.app.pharma-orders.filterApply": "Aplicar",
-  "admin/admin.app.pharma-orders.ordersTableOrderId": "OrderId",
+  "admin/admin.app.pharma-orders.ordersTableOrderId": "Id Orden",
   "admin/admin.app.pharma-orders.ordersTableStatus": "Estado",
   "admin/admin.app.pharma-orders.ordersTableProducts": "Productos",
   "admin/admin.app.pharma-orders.selectedOrders": "Ordenes Selecionadas:",

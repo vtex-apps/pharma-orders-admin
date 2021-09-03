@@ -37,6 +37,7 @@ export default function OrdersTable({ orderList }: TableProps) {
           <div>
             <Button
               variation="secondary"
+              size="small"
               onClick={() => handleModalToggle(data)}
             >
               {intl.formatMessage(titlesIntl.buttonShowProducts)}
