@@ -17,5 +17,9 @@
   "admin/admin.app.pharma-orders.pageTitle": "Pedidos Farmacêuticos",
   "admin/admin.app.pharma-orders.approve": "Aprovar",
   "admin/admin.app.pharma-orders.confirm": "Confirme",
-  "admin/admin.app.pharma-orders.cancel": "Cancelar"
+  "admin/admin.app.pharma-orders.cancel": "Cancelar",
+  "admin/admin.app.pharma-orders.buttonShowProducts": "Mostrar Produtos",
+  "admin/admin.app.pharma-orders.productTableProductId": "ProductId",
+  "admin/admin.app.pharma-orders.productTableQuantity": "Quantidade",
+  "admin/admin.app.pharma-orders.productTableName": "Nome"
 }

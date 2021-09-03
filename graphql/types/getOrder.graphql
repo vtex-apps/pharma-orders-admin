@@ -1,0 +1,25 @@
+type OrderItems {
+  id: String
+  productId: String
+  quantity: Int
+  name: String
+}
+
+type CustomData {
+  fileName: String
+  fileUrl: String
+}
+
+type DataGetOrderResponse {
+  items: [OrderItems]
+  customData: [CustomData]
+}
+
+type DataGetOrderResponseTemp {
+  items: [OrderItems]
+}
+
+type GetOrderResponse {
+  status: Int
+  data: DataGetOrderResponseTemp
+}

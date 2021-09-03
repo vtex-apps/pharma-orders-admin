@@ -1,12 +1,20 @@
+/* eslint-disable @typescript-eslint/no-use-before-define */
 /* eslint-disable react/jsx-handler-names */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { EXPERIMENTAL_Table as Table, Checkbox, Input } from 'vtex.styleguide'
+import {
+  EXPERIMENTAL_Table as Table,
+  Checkbox,
+  Input,
+  Button,
+  Modal,
+} from 'vtex.styleguide'
 import useTableMeasures from '@vtex/styleguide/lib/EXPERIMENTAL_Table/hooks/useTableMeasures'
 import useCheckboxTree from '@vtex/styleguide/lib/EXPERIMENTAL_useCheckboxTree/index'
 import React, { useState, useEffect, useCallback } from 'react'
 import { useIntl } from 'react-intl'
 
 import { titlesIntl } from '../utils/intl'
+import ProductTable from './ProductTable'
 
 export default function TableV2({ orderList }: TableProps) {
   const intl = useIntl()
@@ -25,25 +33,27 @@ export default function TableV2({ orderList }: TableProps) {
       id: 'products',
       title: 'Products',
       cellRenderer: ({ data }: any) => {
-        return data?.map((product: any) => (
-          <div key={product.id}>
-            {product.id} {product.name}
+        return (
+          <div>
+            <Button
+              variation="secondary"
+              onClick={() => handleModalToggle(data)}
+            >
+              {intl.formatMessage(titlesIntl.buttonShowProducts)}
+            </Button>
           </div>
-        ))
-      },
-    },
-    {
-      id: 'files',
-      title: 'Files',
-      cellRenderer: ({ data }: any) => {
-        return data?.map((file: any) => (
-          <div key={file.key}>
-            {file.key} {file.name}
-          </div>
-        ))
+        )
       },
     },
   ]
+
+  const [isProductModalOpen, setIsProductModalOpen] = useState(false)
+  const [orderIdToModal, setOrderIdToModal] = useState()
+
+  const handleModalToggle = (orderId: any) => {
+    setOrderIdToModal(orderId)
+    setIsProductModalOpen(!isProductModalOpen)
+  }
 
   const [withCheckboxes, isRowActive, checkboxes] = useColumnsWithCheckboxes({
     columns,
@@ -255,6 +265,13 @@ export default function TableV2({ orderList }: TableProps) {
         <Table.FilterBar {...filters} />
         <Table.Pagination {...pagination} />
       </Table>
+      <Modal
+        centered
+        isOpen={isProductModalOpen}
+        onClose={() => handleModalToggle(null)}
+      >
+        <ProductTable orderId={orderIdToModal} />
+      </Modal>
     </div>
   )
 }

@@ -1,3 +1,4 @@
 type Query {
-  getSku(ean: String): GetSkuResponse
+  getData: GetDataResponse
+  getOrder(orderId: String): GetOrderResponse
 }

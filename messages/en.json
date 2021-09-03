@@ -17,5 +17,9 @@
   "admin/admin.app.pharma-orders.pageTitle": "Pharma Orders",
   "admin/admin.app.pharma-orders.approve": "Approve",
   "admin/admin.app.pharma-orders.confirm": "Confirm",
-  "admin/admin.app.pharma-orders.cancel": "Cancel"
+  "admin/admin.app.pharma-orders.cancel": "Cancel",
+  "admin/admin.app.pharma-orders.buttonShowProducts": "Show Products",
+  "admin/admin.app.pharma-orders.productTableProductId": "ProductId",
+  "admin/admin.app.pharma-orders.productTableQuantity": "Quantity",
+  "admin/admin.app.pharma-orders.productTableName": "Name"
 }

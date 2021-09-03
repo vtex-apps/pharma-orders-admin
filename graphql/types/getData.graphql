@@ -1,0 +1,10 @@
+type DataGetDataResponse {
+  id: String
+  orderId: String
+  status: String
+}
+
+type GetDataResponse {
+  status: Int
+  data: [DataGetDataResponse]
+}

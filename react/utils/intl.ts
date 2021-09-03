@@ -20,4 +20,8 @@ export const titlesIntl = defineMessages({
   approve: { id: `${prefix}approve` },
   confirm: { id: `${prefix}confirm` },
   cancel: { id: `${prefix}cancel` },
+  buttonShowProducts: { id: `${prefix}buttonShowProducts` },
+  productTableProductId: { id: `${prefix}productTableProductId` },
+  productTableQuantity: { id: `${prefix}productTableQuantity` },
+  productTableName: { id: `${prefix}productTableName` },
 })

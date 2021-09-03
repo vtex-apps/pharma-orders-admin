@@ -1,55 +1,41 @@
 import React from 'react'
 import { Layout, PageHeader, PageBlock } from 'vtex.styleguide'
 import { useIntl } from 'react-intl'
+import { useQuery } from 'react-apollo'
 
 import TableV2 from './components/TableV2'
 import { titlesIntl } from './utils/intl'
+import getData from './graphql/getData.gql'
+import LoadingSpinner from './components/LoadingSpinner'
 
 export default function PharmaOrders() {
   const intl = useIntl()
 
-  const infoFromMasterData: Order[] = [
-    {
-      id: 0,
-      status: 'status1',
-      orderId: '123-123-123',
-      products: [
-        {
-          id: '1',
-          name: 'ibuprofeno 600',
-        },
-        {
-          id: '2',
-          name: 'paracetamol 600',
-        },
-      ],
-      files: [
-        {
-          fileName: 'receta1',
-          file: 'receta.jpg',
-          key: '123',
-        },
-      ],
-    },
-    {
-      id: 1,
-      status: 'status2',
-      orderId: '456-456-456',
-      products: [
-        {
-          id: '27',
-          name: 'buscapona 600',
-        },
-      ],
-      files: [
-        {
-          fileName: 'receta4',
-          file: 'receta.jpg',
-          key: '456',
-        },
-      ],
-    },
-  ]
+  const responseFromGetData = useQuery(getData, {
+    ssr: false,
+  })
+
+  const dataFromMasterData: OrderFromMasterData[] =
+    responseFromGetData.data?.getData?.data
+
+  const orderList: Order[] = dataFromMasterData?.map(
+    (order: OrderFromMasterData, index: number) => {
+      const newOrder: Order = {
+        id: index,
+        status: order.status,
+        orderId: order.orderId,
+        products: order.orderId,
+        files: [
+          {
+            key: order.fileKey,
+            fileName: order.fileName,
+          },
+        ],
+      }
+
+      return newOrder
+    }
+  )
 
   return (
     <Layout
@@ -59,9 +45,8 @@ export default function PharmaOrders() {
       }
     >
       <PageBlock variation="full">
-        {infoFromMasterData.length > 0 && (
-          <TableV2 orderList={infoFromMasterData} />
-        )}
+        {orderList?.length > 0 && <TableV2 orderList={orderList} />}
+        {!orderList && <LoadingSpinner />}
       </PageBlock>
     </Layout>
   )
