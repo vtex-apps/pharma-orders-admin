@@ -1,4 +1,4 @@
-query getOrder($orderId: String) {
+query getOrderItems($orderId: String) {
   getOrder(orderId: $orderId) {
     status
     data {

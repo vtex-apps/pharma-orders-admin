@@ -4,14 +4,14 @@ import useTableMeasures from '@vtex/styleguide/lib/EXPERIMENTAL_Table/hooks/useT
 import { useQuery } from 'react-apollo'
 import { useIntl } from 'react-intl'
 
-import getOrder from '../graphql/getOrder.gql'
+import getOrderItems from '../graphql/getOrderItems.gql'
 import LoadingSpinner from './LoadingSpinner'
 import { titlesIntl } from '../utils/intl'
 
 export default function ProductsTable({ orderId }: ProductTableProps) {
   const intl = useIntl()
 
-  const responseFromGetOrder = useQuery(getOrder, {
+  const responseFromGetOrder = useQuery(getOrderItems, {
     variables: { orderId },
     ssr: false,
   })

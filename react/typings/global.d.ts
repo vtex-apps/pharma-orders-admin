@@ -12,7 +12,7 @@ declare global {
     status: string
     orderId: sting
     products: string
-    files: Files[]
+    files: string
   }
 
   export interface TableProps {

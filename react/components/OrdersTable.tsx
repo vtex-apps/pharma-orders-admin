@@ -15,6 +15,7 @@ import { useIntl } from 'react-intl'
 
 import { titlesIntl } from '../utils/intl'
 import ProductsTable from './ProductsTable'
+import FilesColumn from './FilesColumn'
 
 export default function OrdersTable({ orderList }: TableProps) {
   const intl = useIntl()
@@ -38,7 +39,7 @@ export default function OrdersTable({ orderList }: TableProps) {
             <Button
               variation="secondary"
               size="small"
-              onClick={() => handleModalToggle(data)}
+              onClick={() => handleModalProductsToggle(data)}
             >
               {intl.formatMessage(titlesIntl.buttonShowProducts)}
             </Button>
@@ -46,12 +47,20 @@ export default function OrdersTable({ orderList }: TableProps) {
         )
       },
     },
+    {
+      id: 'files',
+      title: intl.formatMessage(titlesIntl.ordersTableFiles),
+      cellRenderer: ({ data }: any) => {
+        return <FilesColumn orderId={data} />
+      },
+    },
   ]
 
   const [isProductModalOpen, setIsProductModalOpen] = useState(false)
+
   const [orderIdToModal, setOrderIdToModal] = useState()
 
-  const handleModalToggle = (orderId: any) => {
+  const handleModalProductsToggle = (orderId: any) => {
     setOrderIdToModal(orderId)
     setIsProductModalOpen(!isProductModalOpen)
   }
@@ -269,7 +278,7 @@ export default function OrdersTable({ orderList }: TableProps) {
       <Modal
         centered
         isOpen={isProductModalOpen}
-        onClose={() => handleModalToggle(null)}
+        onClose={() => handleModalProductsToggle(null)}
       >
         <ProductsTable orderId={orderIdToModal} />
       </Modal>

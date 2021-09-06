@@ -25,12 +25,7 @@ export default function PharmaOrders() {
         status: order.status,
         orderId: order.orderId,
         products: order.orderId,
-        files: [
-          {
-            key: order.fileKey,
-            fileName: order.fileName,
-          },
-        ],
+        files: order.orderId,
       }
 
       return newOrder

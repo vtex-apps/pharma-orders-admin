@@ -5,21 +5,31 @@ type OrderItems {
   name: String
 }
 
+type Fields {
+  fileName1: String
+  fileUrl1: String
+  fileName2: String
+  fileUrl2: String
+  fileName3: String
+  fileUrl3: String
+}
+
+type CustomApps {
+  fields: Fields
+  id: String
+  major: Int
+}
+
 type CustomData {
-  fileName: String
-  fileUrl: String
+  customApps: [CustomApps]
 }
 
 type DataGetOrderResponse {
   items: [OrderItems]
-  customData: [CustomData]
-}
-
-type DataGetOrderResponseTemp {
-  items: [OrderItems]
+  customData: CustomData
 }
 
 type GetOrderResponse {
   status: Int
-  data: DataGetOrderResponseTemp
+  data: DataGetOrderResponse
 }
