@@ -14,7 +14,7 @@
   "admin/admin.app.pharma-orders.ordersTableOrderId": "OrderId",
   "admin/admin.app.pharma-orders.ordersTableStatus": "Status",
   "admin/admin.app.pharma-orders.ordersTableProducts": "Products",
-  "admin/admin.app.pharma-orders.ordersTableFiles": "Files",
+  "admin/admin.app.pharma-orders.ordersTableFiles": "Prescriptions",
   "admin/admin.app.pharma-orders.selectedOrders": "Selected orders:",
   "admin/admin.app.pharma-orders.selectAllOrders": "Select All",
   "admin/admin.app.pharma-orders.pageTitle": "Pharma Orders",
@@ -25,5 +25,6 @@
   "admin/admin.app.pharma-orders.buttonShowFiles": "Show Files",
   "admin/admin.app.pharma-orders.productTableProductId": "ProductId",
   "admin/admin.app.pharma-orders.productTableQuantity": "Quantity",
-  "admin/admin.app.pharma-orders.productTableName": "Name"
+  "admin/admin.app.pharma-orders.productTableName": "Name",
+  "admin/admin.app.pharma-orders.prescription": "Prescription"
 }

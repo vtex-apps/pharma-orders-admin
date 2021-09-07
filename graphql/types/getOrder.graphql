@@ -6,12 +6,7 @@ type OrderItems {
 }
 
 type Fields {
-  fileName1: String
-  fileUrl1: String
-  fileName2: String
-  fileUrl2: String
-  fileName3: String
-  fileUrl3: String
+  data: String
 }
 
 type CustomApps {

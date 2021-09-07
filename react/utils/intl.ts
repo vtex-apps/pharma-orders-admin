@@ -28,4 +28,5 @@ export const titlesIntl = defineMessages({
   productTableProductId: { id: `${prefix}productTableProductId` },
   productTableQuantity: { id: `${prefix}productTableQuantity` },
   productTableName: { id: `${prefix}productTableName` },
+  prescription: { id: `${prefix}prescription` },
 })

@@ -7,6 +7,7 @@ import type {
   SegmentData,
   ServiceContext,
   MessagesLoaderV2,
+  EventContext,
 } from '@vtex/api'
 
 import type { Clients } from './clients'
@@ -48,5 +49,21 @@ declare global {
   interface Reference {
     Key: string
     Value: string
+  }
+
+  interface StatusChangeContext extends EventContext<Clients> {
+    body: {
+      domain: string
+      orderId: string
+      currentState: string
+      lastState: string
+      currentChangeDate: string
+      lastChangeDate: string
+    }
+  }
+
+  interface SaveDataInMasterDataBody {
+    orderId: string
+    status: string
   }
 }

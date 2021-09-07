@@ -23,4 +23,11 @@ export default class MasterDataClient extends ExternalClient {
   public async getData() {
     return this.http.getRaw(`/pharmaOrders/search?_fields=_all`)
   }
+
+  public async saveData(body: SaveDataInMasterDataBody) {
+    return this.http.postRaw(
+      `/pharmaOrders/documents?_schema=pharma-orders`,
+      body
+    )
+  }
 }

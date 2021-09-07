@@ -29,4 +29,8 @@ declare global {
   export interface ProductTableProps {
     orderId: sting
   }
+
+  export interface ImagePreviewProps {
+    url: sting
+  }
 }

@@ -6,6 +6,7 @@ import { LRUCache, Service } from '@vtex/api'
 
 import { Clients } from './clients'
 import { resolvers } from './resolvers'
+import { someStates } from './middlewares/someStates'
 
 const TIMEOUT_MS = 800
 
@@ -28,5 +29,8 @@ export default new Service<Clients, RecorderState, Context>({
   },
   graphql: {
     resolvers,
+  },
+  events: {
+    someStates,
   },
 })

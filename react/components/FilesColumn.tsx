@@ -1,13 +1,18 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React from 'react'
+import React, { useState } from 'react'
 import { useQuery } from 'react-apollo'
-import { ButtonWithIcon } from 'vtex.styleguide'
-import Download from '@vtex/styleguide/lib/icon/Download'
+import { ButtonWithIcon, Modal } from 'vtex.styleguide'
+import Image from '@vtex/styleguide/lib/icon/Image'
+import { useIntl } from 'react-intl'
 
+import { titlesIntl } from '../utils/intl'
 import LoadingSpinner from './LoadingSpinner'
 import getOrderCustomData from '../graphql/getOrderCustomData.gql'
+import ImagePreview from './ImagePreview'
 
 export default function FilesTable({ orderId }: ProductTableProps) {
+  const intl = useIntl()
+
   const responseFromGetOrder = useQuery(getOrderCustomData, {
     variables: { orderId },
     ssr: false,
@@ -21,49 +26,53 @@ export default function FilesTable({ orderId }: ProductTableProps) {
   // Cuando se pueda terminar una orden, cambiar el id
   // const files = customApps?.find((app: any) => app.id === 'files').fields
 
-  const filesToTest = {
-    fileName1: 'Receta_de_parasetamol_duo',
-    fileUrl1: 'link/al/file/1',
-    fileName2: 'Receta_de_buscapinaForte',
-    fileUrl2: 'link/al/file/2',
-    fileName3: 'Receta_de_RedoxonMaxPowerUltra',
-    fileUrl3: null,
+  const stringArray =
+    "[{'name': 'fileName1', 'url': 'https://medicamentospoc.vtexassets.com/assets/vtex.file-manager-graphql/images/0b7c3f87-4b11-4256-9e03-e862594075bf___cfae4ef5f6b94b568472f2454e14e830.jpeg'},{'name': 'fileName2', 'url': 'https://medicamentospoc.vtexassets.com/assets/vtex.file-manager-graphql/images/c94a2876-420d-4212-98f8-7b1e20e1c9ca___30d9c34e1fd18ca4a6ac9183344d44c7.jpeg'}]"
+
+  const filesObject = JSON.parse(stringArray.replace(/'/g, '"'))
+
+  const [isImagenPreviewModalOpen, setIsImagenPreviewModalOpen] =
+    useState(false)
+
+  const [fileUrlPreview, setfileUrlPreview] = useState('')
+
+  const handleModalImagenPreviewToggle = () => {
+    setIsImagenPreviewModalOpen(!isImagenPreviewModalOpen)
   }
 
-  console.info('filesToTest', filesToTest)
+  function handleOnClick(url: string) {
+    setfileUrlPreview(url)
+    handleModalImagenPreviewToggle()
+  }
 
-  const icon = <Download />
+  const icon = <Image />
 
   return (
     <div>
-      {!filesToTest && <LoadingSpinner />}
-      {filesToTest && (
+      {!filesObject && <LoadingSpinner />}
+      {filesObject && (
         <div>
-          {filesToTest.fileUrl1 && (
-            <span className="mr3">
-              <ButtonWithIcon icon={icon} variation="secondary" size="small">
-                {`Receta 1`}
+          {filesObject.map((file: any, index: number) => (
+            <span className="mr3" key={`${file.name} ${index}`}>
+              <ButtonWithIcon
+                icon={icon}
+                variation="secondary"
+                size="small"
+                onClick={() => handleOnClick(file.url)}
+              >
+                {`${intl.formatMessage(titlesIntl.prescription)} ${index + 1}`}
               </ButtonWithIcon>
             </span>
-          )}
-
-          {filesToTest.fileUrl2 && (
-            <span className="mr3">
-              <ButtonWithIcon icon={icon} variation="secondary" size="small">
-                {`Receta 2`}
-              </ButtonWithIcon>
-            </span>
-          )}
-
-          {filesToTest.fileUrl3 && (
-            <span>
-              <ButtonWithIcon icon={icon} variation="secondary" size="small">
-                {`Receta 3`}
-              </ButtonWithIcon>
-            </span>
-          )}
+          ))}
         </div>
       )}
+      <Modal
+        centered
+        isOpen={isImagenPreviewModalOpen}
+        onClose={handleModalImagenPreviewToggle}
+      >
+        <ImagePreview url={fileUrlPreview} />
+      </Modal>
     </div>
   )
 }

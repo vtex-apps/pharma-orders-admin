@@ -5,15 +5,9 @@ query getOrderCustomData($orderId: String) {
       customData {
         customApps {
           fields {
-            fileName1
-            fileUrl1
-            fileName2
-            fileUrl2
-            fileName3
-            fileUrl3
+            data
           }
           id
-          major
         }
       }
     }

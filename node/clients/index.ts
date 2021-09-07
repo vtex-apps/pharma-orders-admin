@@ -9,6 +9,10 @@ export class Clients extends IOClients {
     return this.getOrSet('getData', MasterDataClient)
   }
 
+  public get masterDataSaveData() {
+    return this.getOrSet('saveData', MasterDataClient)
+  }
+
   public get omsGetOrder() {
     return this.getOrSet('getOrder', OMS)
   }
