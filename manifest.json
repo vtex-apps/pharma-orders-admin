@@ -18,6 +18,16 @@
     "node": "6.x",
     "graphql": "1.x"
   },
+  "settingsSchema": {
+    "title": "Pharma Orders Broadcast",
+    "type": "object",
+    "properties": {
+      "idCategoriaMedicamentos": {
+        "title": "Id de Categoria Medicamentos",
+        "type": "number"
+      }
+    }
+  },
   "billingOptions": {
     "support": {
       "url": "https://support.vtex.com/hc/requests"

@@ -6,7 +6,8 @@ import { LRUCache, Service } from '@vtex/api'
 
 import { Clients } from './clients'
 import { resolvers } from './resolvers'
-import { someStates } from './middlewares/someStates'
+import { getOrder } from './middlewares/getOrder'
+import { saveData } from './middlewares/saveData'
 
 const TIMEOUT_MS = 800
 
@@ -31,6 +32,6 @@ export default new Service<Clients, RecorderState, Context>({
     resolvers,
   },
   events: {
-    someStates,
+    orderCreated: [getOrder, saveData],
   },
 })
