@@ -16,10 +16,52 @@ import { useIntl } from 'react-intl'
 import { titlesIntl } from '../utils/intl'
 import ProductsTable from './ProductsTable'
 import FilesColumn from './FilesColumn'
+import { ErrorArrayMessage } from './ErrorMessage'
+import SuccessMessage from './SuccessMessage'
+import LoadingSpinner from './LoadingSpinner'
 
 export default function OrdersTable({ orderList }: TableProps) {
   const intl = useIntl()
-  const items = orderList
+  const [items, setItems] = useState(orderList)
+
+  // const [error, setError] = useState(false)
+  const [errorArray, setErrorArray] = useState(false)
+  const [success, setSuccess] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [message, setMessage] = useState('')
+  const [messageArray, setMessageArray] = useState<string[]>([])
+
+  const clearAlerts = useCallback(() => {
+    // setError(false)
+    setErrorArray(false)
+    setSuccess(false)
+    setLoading(false)
+    setMessage('')
+    setMessageArray([])
+  }, [])
+
+  const errorArrayAlert = useCallback(() => {
+    // setError(false)
+    setErrorArray(true)
+    setSuccess(false)
+    setLoading(false)
+  }, [])
+
+  const successAlert = useCallback(() => {
+    // setError(false)
+    setErrorArray(false)
+    setSuccess(true)
+    setLoading(false)
+  }, [])
+
+  const loadingAlert = useCallback(() => {
+    // setError(false)
+    setErrorArray(false)
+    setSuccess(false)
+    setLoading(true)
+    setMessage('')
+    setMessageArray([])
+  }, [])
 
   const columns = [
     {
@@ -86,15 +128,30 @@ export default function OrdersTable({ orderList }: TableProps) {
   }
 
   async function handleApproveAction(selectedRows: any) {
+    loadingAlert()
     console.info('handleApproveAction selectedRows', selectedRows)
+    setMessageArray(['Error1', 'Error2'])
+    errorArrayAlert()
   }
 
   async function handleConfirmAction(selectedRows: any) {
+    loadingAlert()
     console.info('handleConfirmAction selectedRows', selectedRows)
+    setMessageArray(['Error3', 'Error4'])
+    errorArrayAlert()
   }
 
   async function handleCancelAction(selectedRows: any) {
-    console.info('handleCancelAction selectedRows', selectedRows)
+    loadingAlert()
+    const tempItems = items
+
+    selectedRows.forEach((row: any) => {
+      tempItems[row.id].status = 'canceled'
+    })
+
+    setItems(tempItems)
+    successAlert()
+    setMessage('Cancelar con exito')
   }
 
   const [filteredItems, setFilteredItems] = useState(items)
@@ -241,6 +298,13 @@ export default function OrdersTable({ orderList }: TableProps) {
 
   return (
     <div>
+      <div className="messagesOrderTable">
+        {loading && <LoadingSpinner />}
+        {success && <SuccessMessage onClose={clearAlerts} message={message} />}
+        {errorArray && (
+          <ErrorArrayMessage onClose={clearAlerts} messages={messageArray} />
+        )}
+      </div>
       <Table
         measures={measures}
         columns={withCheckboxes}

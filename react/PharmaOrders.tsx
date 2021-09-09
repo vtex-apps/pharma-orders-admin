@@ -19,13 +19,14 @@ export default function PharmaOrders() {
     responseFromGetData.data?.getData?.data
 
   const orderList: Order[] = dataFromMasterData?.map(
-    (order: OrderFromMasterData, index: number) => {
+    (orderFromMasterData: OrderFromMasterData, index: number) => {
       const newOrder: Order = {
         id: index,
-        status: order.status,
-        orderId: order.orderId,
-        products: order.orderId,
-        files: order.orderId,
+        idMasterData: orderFromMasterData.id,
+        status: orderFromMasterData.status,
+        orderId: orderFromMasterData.orderId,
+        products: orderFromMasterData.orderId,
+        files: orderFromMasterData.orderId,
       }
 
       return newOrder

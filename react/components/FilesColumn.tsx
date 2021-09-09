@@ -27,7 +27,7 @@ export default function FilesTable({ orderId }: ProductTableProps) {
   // const files = customApps?.find((app: any) => app.id === 'files').fields
 
   const stringArray =
-    "[{'name': 'fileName1', 'url': 'https://medicamentospoc.vtexassets.com/assets/vtex.file-manager-graphql/images/0b7c3f87-4b11-4256-9e03-e862594075bf___cfae4ef5f6b94b568472f2454e14e830.jpeg'},{'name': 'fileName2', 'url': 'https://medicamentospoc.vtexassets.com/assets/vtex.file-manager-graphql/images/c94a2876-420d-4212-98f8-7b1e20e1c9ca___30d9c34e1fd18ca4a6ac9183344d44c7.jpeg'}]"
+    "[{'name': 'fileName1', 'url': 'https://static.docsity.com/documents_first_pages/2021/06/02/4c41dd647fa079da842893ffed07a691.png'},{'name': 'fileName2', 'url': 'https://www.partesdel.com/wp-content/uploads/Ejemplo-de-receta-m%C3%A9dica.png'}]"
 
   const filesObject = JSON.parse(stringArray.replace(/'/g, '"'))
 

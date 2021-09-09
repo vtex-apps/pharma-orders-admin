@@ -9,6 +9,7 @@ declare global {
 
   export interface Order {
     id: number
+    idMasterData: string
     status: string
     orderId: sting
     products: string
@@ -20,10 +21,9 @@ declare global {
   }
 
   export interface OrderFromMasterData {
+    id: string
     orderId: sting
     status: string
-    fileKey: string
-    fileName: string
   }
 
   export interface ProductTableProps {
@@ -32,5 +32,19 @@ declare global {
 
   export interface ImagePreviewProps {
     url: sting
+  }
+  export interface SuccessComponent {
+    message: string
+    onClose: () => void
+  }
+
+  export interface ErrorComponent {
+    message: string
+    onClose: () => void
+  }
+
+  export interface ErrorArrayComponent {
+    messages: string[]
+    onClose: () => void
   }
 }
