@@ -31,5 +31,9 @@
   "admin/admin.app.pharma-orders.theOrder": "The order",
   "admin/admin.app.pharma-orders.wasCanceled": "was successfully canceled.",
   "admin/admin.app.pharma-orders.wasNotCanceled": "was not canceled.",
-  "admin/admin.app.pharma-orders.wasAlreadyCanceled": "was already canceled."
+  "admin/admin.app.pharma-orders.wasAlreadyCanceled": "was already canceled.",
+  "admin/admin.app.pharma-orders.canceled": "Canceled",
+  "admin/admin.app.pharma-orders.created": "Created",
+  "admin/admin.app.pharma-orders.approved": "Approved",
+  "admin/admin.app.pharma-orders.confirmed": "Confirmed"
 }

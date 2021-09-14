@@ -7,6 +7,7 @@ import {
   Input,
   Button,
   Modal,
+  Tag,
 } from 'vtex.styleguide'
 import useTableMeasures from '@vtex/styleguide/lib/EXPERIMENTAL_Table/hooks/useTableMeasures'
 import useCheckboxTree from '@vtex/styleguide/lib/EXPERIMENTAL_useCheckboxTree/index'
@@ -57,10 +58,41 @@ export default function OrdersTable({ orderList }: TableProps) {
     setMessageArrayError([])
   }, [])
 
+  const canceled = intl.formatMessage(titlesIntl.canceled)
+  const created = intl.formatMessage(titlesIntl.created)
+  const approved = intl.formatMessage(titlesIntl.approved)
+  const confirmed = intl.formatMessage(titlesIntl.confirmed)
+
   const columns = [
     {
       id: 'status',
       title: intl.formatMessage(titlesIntl.ordersTableStatus),
+      cellRenderer: ({ data }: any) => {
+        let tag
+
+        switch (data) {
+          case 'canceled':
+            tag = <Tag bgColor="#F71963">{canceled}</Tag>
+            break
+
+          case 'created':
+            tag = <Tag bgColor="#E67E22">{created}</Tag>
+            break
+
+          case 'approved':
+            tag = <Tag bgColor="#7D3C98">{approved}</Tag>
+            break
+
+          case 'confirmed':
+            tag = <Tag bgColor="#16A085">{confirmed}</Tag>
+            break
+
+          default:
+            break
+        }
+
+        return <div>{tag}</div>
+      },
     },
     {
       id: 'orderId',
@@ -249,6 +281,42 @@ export default function OrdersTable({ orderList }: TableProps) {
 
           break
 
+        case 'status':
+          if (!object) return
+          // eslint-disable-next-line no-case-declarations
+          const selectedStatus = Object.keys(object).reduce(
+            (acc: any, item: any) => (object[item] ? [...acc, item] : acc),
+            []
+          )
+
+          newData = newData.filter((item: any) => {
+            let status
+
+            switch (item[subject]) {
+              case 'canceled':
+                status = canceled
+                break
+
+              case 'created':
+                status = created
+                break
+
+              case 'approved':
+                status = approved
+                break
+
+              case 'confirmed':
+                status = confirmed
+                break
+
+              default:
+                break
+            }
+
+            return selectedStatus.includes(status)
+          })
+          break
+
         default:
           break
       }
@@ -258,8 +326,8 @@ export default function OrdersTable({ orderList }: TableProps) {
   }
 
   const filterClear = intl.formatMessage(titlesIntl.filterClear)
-  // const filterAll = intl.formatMessage(titlesIntl.filterAll)
-  // const filterNone = intl.formatMessage(titlesIntl.filterNone)
+  const filterAll = intl.formatMessage(titlesIntl.filterAll)
+  const filterNone = intl.formatMessage(titlesIntl.filterNone)
   const filterAny = intl.formatMessage(titlesIntl.filterAny)
   const filterIs = intl.formatMessage(titlesIntl.filterIs)
   const filterIsNot = intl.formatMessage(titlesIntl.filterIsNot)
@@ -267,13 +335,50 @@ export default function OrdersTable({ orderList }: TableProps) {
   const filterApply = intl.formatMessage(titlesIntl.filterApply)
 
   const filters = {
-    alwaysVisibleFilters: ['orderId'],
+    alwaysVisibleFilters: ['status', 'orderId'],
     statements: filterStatements,
     onChangeStatements: handleFiltersChange,
     clearAllFiltersButtonLabel: filterClear,
     collapseLeft: true,
     submitFilterLabel: filterApply,
     options: {
+      status: {
+        label: intl.formatMessage(titlesIntl.ordersTableStatus),
+        renderFilterLabel: (st: any) => {
+          if (!st || !st.object) {
+            return filterAll
+          }
+
+          const keys: any = st.object ? Object.keys(st.object) : {}
+          const isAllTrue = !keys.some((key: any) => !st.object[key])
+          const isAllFalse = !keys.some((key: any) => st.object[key])
+          const trueKeys = keys.filter((key: any) => st.object[key])
+          let trueKeysLabel = ''
+
+          trueKeys.forEach((key: any, index: any) => {
+            trueKeysLabel += `${key}${
+              index === trueKeys.length - 1 ? '' : ', '
+            }`
+          })
+
+          const labelsArray = trueKeysLabel
+            .split(',')
+            .map((item: any) => item.trim())
+
+          return `${
+            isAllTrue ? filterAll : isAllFalse ? filterNone : `${labelsArray}`
+          }`
+        },
+        verbs: [
+          {
+            value: 'includes',
+            object: {
+              renderFn: statusSelectorObject,
+              extraParams: {},
+            },
+          },
+        ],
+      },
       orderId: {
         label: intl.formatMessage(titlesIntl.ordersTableOrderId),
         ...simpleInputVerbsAndLabel(),
@@ -333,6 +438,51 @@ export default function OrdersTable({ orderList }: TableProps) {
         },
       ],
     }
+  }
+
+  function statusSelectorObject({ values, onChangeObjectCallback }: any) {
+    const initialValue = {
+      [canceled]: true,
+      [created]: true,
+      [approved]: true,
+      [confirmed]: true,
+      ...(values || {}),
+    }
+
+    const toggleValueByKey = (key: any) => {
+      const newValues = {
+        ...(values || initialValue),
+        [key]: values ? !values[key] : false,
+      }
+
+      return newValues
+    }
+
+    return (
+      <div>
+        {Object.keys(initialValue).map((opt, index) => {
+          return (
+            <div className="mb3" key={`class-statment-object-${opt}-${index}`}>
+              <Checkbox
+                checked={values ? values[opt] : initialValue[opt]}
+                label={opt}
+                name="default-checkbox-group"
+                onChange={() => {
+                  const newValue = toggleValueByKey(`${opt}`)
+                  const newValueKeys = Object.keys(newValue)
+                  const isEmptyFilter = !newValueKeys.some(
+                    (key) => !newValue[key]
+                  )
+
+                  onChangeObjectCallback(isEmptyFilter ? null : newValue)
+                }}
+                value={opt}
+              />
+            </div>
+          )
+        })}
+      </div>
+    )
   }
 
   return (
