@@ -27,5 +27,9 @@
   "admin/admin.app.pharma-orders.productTableQuantity": "Quantity",
   "admin/admin.app.pharma-orders.productTableName": "Name",
   "admin/admin.app.pharma-orders.prescription": "Prescription",
-  "admin/admin.app.pharma-orders.withoutPrescription": "Without prescriptions"
+  "admin/admin.app.pharma-orders.withoutPrescription": "Without prescriptions",
+  "admin/admin.app.pharma-orders.theOrder": "The order",
+  "admin/admin.app.pharma-orders.wasCanceled": "was successfully canceled.",
+  "admin/admin.app.pharma-orders.wasNotCanceled": "was not canceled.",
+  "admin/admin.app.pharma-orders.wasAlreadyCanceled": "was already canceled."
 }

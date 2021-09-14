@@ -144,8 +144,6 @@ export default function OrdersTable({ orderList }: TableProps) {
     const errorArrayTemp: string[] = []
 
     for await (const row of selectedRows) {
-      console.info('row', row)
-      console.info('row.status', row.status)
       if (row.status !== 'canceled') {
         const dataFromMutation = await cancelOrderMutation({
           variables: {
@@ -153,22 +151,28 @@ export default function OrdersTable({ orderList }: TableProps) {
           },
         })
 
-        const response = dataFromMutation.data.cancelOrder.data
-
-        console.info('response', response)
         const { status } = dataFromMutation.data.cancelOrder
 
-        console.info('status', status)
         if (status === 200) {
           tempItems[row.id].status = 'canceled'
           successArrayTemp.push(
-            `La orden ${row.orderId} fue cancelada con exito.`
+            `${intl.formatMessage(titlesIntl.theOrder)} ${
+              row.orderId
+            } ${intl.formatMessage(titlesIntl.wasCanceled)}`
           )
         } else {
-          errorArrayTemp.push(`La orden ${row.orderId} no fue cancelada.`)
+          errorArrayTemp.push(
+            `${intl.formatMessage(titlesIntl.theOrder)} ${
+              row.orderId
+            } ${intl.formatMessage(titlesIntl.wasNotCanceled)}`
+          )
         }
       } else {
-        errorArrayTemp.push(`La orden ${row.orderId} ya estaba cancelada.`)
+        errorArrayTemp.push(
+          `${intl.formatMessage(titlesIntl.theOrder)} ${
+            row.orderId
+          } ${intl.formatMessage(titlesIntl.wasAlreadyCanceled)}`
+        )
       }
     }
 
@@ -176,14 +180,10 @@ export default function OrdersTable({ orderList }: TableProps) {
       setItems(tempItems)
     }
 
-    console.info('successArrayTemp', successArrayTemp)
-
     if (successArrayTemp.length > 0) {
       setSuccessArray(true)
       setMessageArraySuccess(successArrayTemp)
     }
-
-    console.info('errorArrayTemp', errorArrayTemp)
 
     if (errorArrayTemp.length > 0) {
       setErrorArray(true)

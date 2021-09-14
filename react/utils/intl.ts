@@ -30,4 +30,8 @@ export const titlesIntl = defineMessages({
   productTableName: { id: `${prefix}productTableName` },
   prescription: { id: `${prefix}prescription` },
   withoutPrescription: { id: `${prefix}withoutPrescription` },
+  theOrder: { id: `${prefix}theOrder` },
+  wasCanceled: { id: `${prefix}wasCanceled` },
+  wasNotCanceled: { id: `${prefix}wasNotCanceled` },
+  wasAlreadyCanceled: { id: `${prefix}wasAlreadyCanceled` },
 })
