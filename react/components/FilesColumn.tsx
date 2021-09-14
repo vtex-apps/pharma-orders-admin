@@ -1,12 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState } from 'react'
 import { useQuery } from 'react-apollo'
-import { ButtonWithIcon, Modal } from 'vtex.styleguide'
+import { ButtonWithIcon, Modal, Tag } from 'vtex.styleguide'
 import Image from '@vtex/styleguide/lib/icon/Image'
 import { useIntl } from 'react-intl'
 
 import { titlesIntl } from '../utils/intl'
-import LoadingSpinner from './LoadingSpinner'
 import getOrderCustomData from '../graphql/getOrderCustomData.gql'
 import ImagePreview from './ImagePreview'
 
@@ -21,15 +20,10 @@ export default function FilesTable({ orderId }: ProductTableProps) {
   const customApps =
     responseFromGetOrder?.data?.getOrder?.data?.customData?.customApps
 
-  console.info('customApps', customApps)
+  const files = customApps?.find((app: any) => app.id === 'uploadfiles').fields
+    .data
 
-  // Cuando se pueda terminar una orden, cambiar el id
-  // const files = customApps?.find((app: any) => app.id === 'files').fields
-
-  const stringArray =
-    "[{'name': 'fileName1', 'url': 'https://static.docsity.com/documents_first_pages/2021/06/02/4c41dd647fa079da842893ffed07a691.png'},{'name': 'fileName2', 'url': 'https://www.partesdel.com/wp-content/uploads/Ejemplo-de-receta-m%C3%A9dica.png'}]"
-
-  const filesObject = JSON.parse(stringArray.replace(/'/g, '"'))
+  const filesObject = files && JSON.parse(files.replace(/'/g, '"'))
 
   const [isImagenPreviewModalOpen, setIsImagenPreviewModalOpen] =
     useState(false)
@@ -46,10 +40,15 @@ export default function FilesTable({ orderId }: ProductTableProps) {
   }
 
   const icon = <Image />
+  const withoutPrescription = intl.formatMessage(titlesIntl.withoutPrescription)
 
   return (
     <div>
-      {!filesObject && <LoadingSpinner />}
+      {!filesObject && (
+        <Tag color="#134CD8" variation="low">
+          {withoutPrescription}
+        </Tag>
+      )}
       {filesObject && (
         <div>
           {filesObject.map((file: any, index: number) => (

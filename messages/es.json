@@ -26,5 +26,6 @@
   "admin/admin.app.pharma-orders.productTableProductId": "Id Producto",
   "admin/admin.app.pharma-orders.productTableQuantity": "Cantidad",
   "admin/admin.app.pharma-orders.productTableName": "Nombre",
-  "admin/admin.app.pharma-orders.prescription": "Receta"
+  "admin/admin.app.pharma-orders.prescription": "Receta",
+  "admin/admin.app.pharma-orders.withoutPrescription": "Sin recetas"
 }
