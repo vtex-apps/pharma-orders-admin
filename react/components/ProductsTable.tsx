@@ -24,12 +24,12 @@ export default function ProductsTable({ orderId }: ProductTableProps) {
       title: intl.formatMessage(titlesIntl.productTableProductId),
     },
     {
-      id: 'name',
-      title: intl.formatMessage(titlesIntl.productTableName),
-    },
-    {
       id: 'quantity',
       title: intl.formatMessage(titlesIntl.productTableQuantity),
+    },
+    {
+      id: 'name',
+      title: intl.formatMessage(titlesIntl.productTableName),
     },
   ]
 

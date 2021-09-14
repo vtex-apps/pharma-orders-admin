@@ -9,6 +9,10 @@
     "orderCreated": {
       "sender": "vtex.orders-broadcast",
       "topics": ["order-created"]
+    },
+    "orderCanceled": {
+      "sender": "vtex.orders-broadcast",
+      "topics": ["canceled"]
     }
   }
 }

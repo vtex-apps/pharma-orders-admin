@@ -23,4 +23,8 @@ export default class OMS extends ExternalClient {
   public async getOrder(orderId: string) {
     return this.http.getRaw(`/${orderId}`)
   }
+
+  public async cancelOrder(orderId: string) {
+    return this.http.postRaw(`/${orderId}/cancel`)
+  }
 }

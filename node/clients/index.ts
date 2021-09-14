@@ -5,15 +5,11 @@ import OMS from './omsClient'
 
 // Extend the default IOClients implementation with our own custom clients.
 export class Clients extends IOClients {
-  public get masterDataGetData() {
-    return this.getOrSet('getData', MasterDataClient)
+  public get masterDataClient() {
+    return this.getOrSet('masterDataClient', MasterDataClient)
   }
 
-  public get masterDataSaveData() {
-    return this.getOrSet('saveData', MasterDataClient)
-  }
-
-  public get omsGetOrder() {
-    return this.getOrSet('getOrder', OMS)
+  public get omsClient() {
+    return this.getOrSet('omsClient', OMS)
   }
 }

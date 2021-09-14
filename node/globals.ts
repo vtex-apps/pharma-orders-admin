@@ -66,4 +66,12 @@ declare global {
     orderId: string
     status: string
   }
+  interface DocumentOfOrder {
+    id: string
+    orderId: string
+    status: string
+  }
+  interface State extends RecorderState {
+    documentOfOrder: DocumentOfOrder
+  }
 }

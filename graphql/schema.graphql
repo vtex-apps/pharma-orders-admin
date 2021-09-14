@@ -1,4 +1,5 @@
 type Query {
   getData: GetDataResponse
   getOrder(orderId: String): GetOrderResponse
+  cancelOrder(orderId: String): CancelOrderResponse
 }

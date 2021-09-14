@@ -6,6 +6,13 @@ export const queries = {
     { orderId }: any,
     ctx: Context
   ): Promise<any> => {
-    return ctx.clients.omsGetOrder.getOrder(orderId)
+    return ctx.clients.omsClient.getOrder(orderId)
+  },
+  cancelOrder: async (
+    _: unknown,
+    { orderId }: any,
+    ctx: Context
+  ): Promise<any> => {
+    return ctx.clients.omsClient.cancelOrder(orderId)
   },
 }

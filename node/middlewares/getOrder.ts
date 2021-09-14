@@ -4,13 +4,13 @@ export async function getOrder(
   next: () => Promise<any>
 ) {
   const {
-    clients: { omsGetOrder },
+    clients: { omsClient },
   } = ctx
 
   const { orderId } = ctx.body
 
   try {
-    const order = await omsGetOrder.getOrder(orderId)
+    const order = await omsClient.getOrder(orderId)
 
     const { idCategoriaMedicamentos } = await ctx.clients.apps.getAppSettings(
       `${process.env.VTEX_APP_ID}`

@@ -18,6 +18,6 @@
   "typeAcquisition": {
     "enable": false
   },
-  "include": ["global.ts", "./**/*"],
+  "include": ["global.ts", "./**/*", "middlewares/.ts"],
   "exclude": ["node_modules"]
 }

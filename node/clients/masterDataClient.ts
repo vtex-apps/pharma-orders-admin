@@ -30,4 +30,17 @@ export default class MasterDataClient extends ExternalClient {
       body
     )
   }
+
+  public async getIdOfOrder(orderId: string) {
+    return this.http.getRaw(
+      `/pharmaOrders/search?_schema=pharma-orders&_fields=id,orderId,status&_where=orderId=${orderId}`
+    )
+  }
+
+  public async masterDataClient(id: string, body: SaveDataInMasterDataBody) {
+    return this.http.patch(
+      `/pharmaOrders/documents/${id}?_schema=pharma-orders`,
+      body
+    )
+  }
 }
