@@ -1,5 +1,8 @@
 type Query {
   getData: GetDataResponse
   getOrder(orderId: String): GetOrderResponse
+}
+
+type Mutation {
   cancelOrder(orderId: String): CancelOrderResponse
 }

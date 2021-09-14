@@ -8,6 +8,9 @@ export const queries = {
   ): Promise<any> => {
     return ctx.clients.omsClient.getOrder(orderId)
   },
+}
+
+export const mutations = {
   cancelOrder: async (
     _: unknown,
     { orderId }: any,

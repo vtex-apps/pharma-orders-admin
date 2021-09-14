@@ -1,0 +1,10 @@
+mutation cancelOrder($orderId: String) {
+  cancelOrder(orderId: $orderId) {
+    status
+    data {
+      date
+      orderId
+      receipt
+    }
+  }
+}
