@@ -12,55 +12,49 @@ import useTableMeasures from '@vtex/styleguide/lib/EXPERIMENTAL_Table/hooks/useT
 import useCheckboxTree from '@vtex/styleguide/lib/EXPERIMENTAL_useCheckboxTree/index'
 import React, { useState, useEffect, useCallback } from 'react'
 import { useIntl } from 'react-intl'
+import { useMutation } from 'react-apollo'
 
 import { titlesIntl } from '../utils/intl'
 import ProductsTable from './ProductsTable'
 import FilesColumn from './FilesColumn'
 import { ErrorArrayMessage } from './ErrorMessage'
-import SuccessMessage from './SuccessMessage'
+import { SuccessArrayMessage } from './SuccessMessage'
 import LoadingSpinner from './LoadingSpinner'
+import cancelOrder from '../graphql/cancelOrder.gql'
 
 export default function OrdersTable({ orderList }: TableProps) {
   const intl = useIntl()
   const [items, setItems] = useState(orderList)
-
+  const [cancelOrderMutation] = useMutation(cancelOrder)
   // const [error, setError] = useState(false)
   const [errorArray, setErrorArray] = useState(false)
-  const [success, setSuccess] = useState(false)
+  // const [success, setSuccess] = useState(false)
+  const [successArray, setSuccessArray] = useState(false)
   const [loading, setLoading] = useState(false)
-  const [message, setMessage] = useState('')
-  const [messageArray, setMessageArray] = useState<string[]>([])
+  // const [message, setMessage] = useState('')
+  const [messageArraySuccess, setMessageArraySuccess] = useState<string[]>([])
+  const [messageArrayError, setMessageArrayError] = useState<string[]>([])
 
   const clearAlerts = useCallback(() => {
     // setError(false)
     setErrorArray(false)
-    setSuccess(false)
+    // setSuccess(false)
+    setSuccessArray(false)
     setLoading(false)
-    setMessage('')
-    setMessageArray([])
-  }, [])
-
-  const errorArrayAlert = useCallback(() => {
-    // setError(false)
-    setErrorArray(true)
-    setSuccess(false)
-    setLoading(false)
-  }, [])
-
-  const successAlert = useCallback(() => {
-    // setError(false)
-    setErrorArray(false)
-    setSuccess(true)
-    setLoading(false)
+    // setMessage('')
+    setMessageArraySuccess([])
+    setMessageArrayError([])
   }, [])
 
   const loadingAlert = useCallback(() => {
     // setError(false)
     setErrorArray(false)
-    setSuccess(false)
+    // setSuccess(false)
+    setSuccessArray(false)
     setLoading(true)
-    setMessage('')
-    setMessageArray([])
+    // setMessage('')
+    setMessageArraySuccess([])
+    setMessageArrayError([])
   }, [])
 
   const columns = [
@@ -130,28 +124,73 @@ export default function OrdersTable({ orderList }: TableProps) {
   async function handleApproveAction(selectedRows: any) {
     loadingAlert()
     console.info('handleApproveAction selectedRows', selectedRows)
-    setMessageArray(['Error1', 'Error2'])
-    errorArrayAlert()
+    setMessageArrayError(['Error1', 'Error2'])
+    setErrorArray(true)
+    setLoading(false)
   }
 
   async function handleConfirmAction(selectedRows: any) {
     loadingAlert()
     console.info('handleConfirmAction selectedRows', selectedRows)
-    setMessageArray(['Error3', 'Error4'])
-    errorArrayAlert()
+    setMessageArrayError(['Error3', 'Error4'])
+    setErrorArray(true)
+    setLoading(false)
   }
 
   async function handleCancelAction(selectedRows: any) {
     loadingAlert()
     const tempItems = items
+    const successArrayTemp: string[] = []
+    const errorArrayTemp: string[] = []
 
-    selectedRows.forEach((row: any) => {
-      tempItems[row.id].status = 'canceled'
-    })
+    for await (const row of selectedRows) {
+      console.info('row', row)
+      console.info('row.status', row.status)
+      if (row.status !== 'canceled') {
+        const dataFromMutation = await cancelOrderMutation({
+          variables: {
+            orderId: row.orderId,
+          },
+        })
 
-    setItems(tempItems)
-    successAlert()
-    setMessage('Cancelar con exito')
+        const response = dataFromMutation.data.cancelOrder.data
+
+        console.info('response', response)
+        const { status } = dataFromMutation.data.cancelOrder
+
+        console.info('status', status)
+        if (status === 200) {
+          tempItems[row.id].status = 'canceled'
+          successArrayTemp.push(
+            `La orden ${row.orderId} fue cancelada con exito.`
+          )
+        } else {
+          errorArrayTemp.push(`La orden ${row.orderId} no fue cancelada.`)
+        }
+      } else {
+        errorArrayTemp.push(`La orden ${row.orderId} ya estaba cancelada.`)
+      }
+    }
+
+    if (tempItems.length > 0) {
+      setItems(tempItems)
+    }
+
+    console.info('successArrayTemp', successArrayTemp)
+
+    if (successArrayTemp.length > 0) {
+      setSuccessArray(true)
+      setMessageArraySuccess(successArrayTemp)
+    }
+
+    console.info('errorArrayTemp', errorArrayTemp)
+
+    if (errorArrayTemp.length > 0) {
+      setErrorArray(true)
+      setMessageArrayError(errorArrayTemp)
+    }
+
+    setLoading(false)
   }
 
   const [filteredItems, setFilteredItems] = useState(items)
@@ -300,9 +339,17 @@ export default function OrdersTable({ orderList }: TableProps) {
     <div>
       <div className="messagesOrderTable">
         {loading && <LoadingSpinner />}
-        {success && <SuccessMessage onClose={clearAlerts} message={message} />}
+        {successArray && (
+          <SuccessArrayMessage
+            onClose={clearAlerts}
+            messages={messageArraySuccess}
+          />
+        )}
         {errorArray && (
-          <ErrorArrayMessage onClose={clearAlerts} messages={messageArray} />
+          <ErrorArrayMessage
+            onClose={clearAlerts}
+            messages={messageArrayError}
+          />
         )}
       </div>
       <Table

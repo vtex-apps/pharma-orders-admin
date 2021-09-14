@@ -38,6 +38,11 @@ declare global {
     onClose: () => void
   }
 
+  export interface SuccessArrayComponent {
+    messages: string[]
+    onClose: () => void
+  }
+
   export interface ErrorComponent {
     message: string
     onClose: () => void
