@@ -20,7 +20,7 @@ export async function saveDataCanceled(
         status: 'canceled',
       }
 
-      await masterDataClient.masterDataClient(id, body)
+      await masterDataClient.updateDocument(id, body)
 
       await next()
     }

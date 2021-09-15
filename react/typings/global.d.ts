@@ -52,4 +52,9 @@ declare global {
     messages: string[]
     onClose: () => void
   }
+
+  interface BodyUpdateDocument {
+    orderId: string
+    status: string
+  }
 }

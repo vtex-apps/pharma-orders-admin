@@ -22,11 +22,14 @@ import { ErrorArrayMessage } from './ErrorMessage'
 import { SuccessArrayMessage } from './SuccessMessage'
 import LoadingSpinner from './LoadingSpinner'
 import cancelOrder from '../graphql/cancelOrder.gql'
+import updateDocument from '../graphql/updateDocument.gql'
 
 export default function OrdersTable({ orderList }: TableProps) {
   const intl = useIntl()
   const [items, setItems] = useState(orderList)
   const [cancelOrderMutation] = useMutation(cancelOrder)
+  const [updateDocumentMutation] = useMutation(updateDocument)
+
   // const [error, setError] = useState(false)
   const [errorArray, setErrorArray] = useState(false)
   // const [success, setSuccess] = useState(false)
@@ -160,6 +163,8 @@ export default function OrdersTable({ orderList }: TableProps) {
     const errorArrayTemp: string[] = []
 
     for await (const row of selectedRows) {
+      console.info('row', row)
+
       if (row.status === 'created') {
         /*
         const dataFromMutation = await cancelOrderMutation({
@@ -170,15 +175,39 @@ export default function OrdersTable({ orderList }: TableProps) {
 
         const { status } = dataFromMutation.data.cancelOrder
         */
-        const status = 200
+        const statusFromSendNotification = 200
 
-        if (status === 200) {
-          tempItems[row.id].status = 'approved'
-          successArrayTemp.push(
-            `${intl.formatMessage(titlesIntl.theOrder)} ${
-              row.orderId
-            } ${intl.formatMessage(titlesIntl.wasApproved)}`
-          )
+        if (statusFromSendNotification === 200) {
+          const bodyToMasterData: BodyUpdateDocument = {
+            orderId: row.orderId,
+            status: 'approved',
+          }
+
+          const dataFromMutation = await updateDocumentMutation({
+            variables: {
+              documentId: row.idMasterData,
+              body: bodyToMasterData,
+            },
+          })
+
+          const statusUpdateDocument =
+            dataFromMutation.data.updateDocument.status
+
+          if (statusUpdateDocument === 200) {
+            tempItems[row.id].status = 'approved'
+            successArrayTemp.push(
+              `${intl.formatMessage(titlesIntl.theOrder)} ${
+                row.orderId
+              } ${intl.formatMessage(titlesIntl.wasApproved)}`
+            )
+          } else {
+            // aca habria que ver algo como intentar de actualizar el documento mas adelante
+            errorArrayTemp.push(
+              `${intl.formatMessage(titlesIntl.theOrder)} ${
+                row.orderId
+              } ${intl.formatMessage(titlesIntl.wasNotApproved)}`
+            )
+          }
         } else {
           errorArrayTemp.push(
             `${intl.formatMessage(titlesIntl.theOrder)} ${
@@ -225,6 +254,8 @@ export default function OrdersTable({ orderList }: TableProps) {
     const errorArrayTemp: string[] = []
 
     for await (const row of selectedRows) {
+      console.info('row', row)
+
       if (row.status === 'approved') {
         /*
         const dataFromMutation = await cancelOrderMutation({
@@ -235,15 +266,39 @@ export default function OrdersTable({ orderList }: TableProps) {
 
         const { status } = dataFromMutation.data.cancelOrder
         */
-        const status = 200
+        const statusFromServices = 200
 
-        if (status === 200) {
-          tempItems[row.id].status = 'confirmed'
-          successArrayTemp.push(
-            `${intl.formatMessage(titlesIntl.theOrder)} ${
-              row.orderId
-            } ${intl.formatMessage(titlesIntl.wasConfirmed)}`
-          )
+        if (statusFromServices === 200) {
+          const bodyToMasterData: BodyUpdateDocument = {
+            orderId: row.orderId,
+            status: 'confirmed',
+          }
+
+          const dataFromMutation = await updateDocumentMutation({
+            variables: {
+              documentId: row.idMasterData,
+              body: bodyToMasterData,
+            },
+          })
+
+          const statusUpdateDocument =
+            dataFromMutation.data.updateDocument.status
+
+          if (statusUpdateDocument === 200) {
+            tempItems[row.id].status = 'confirmed'
+            successArrayTemp.push(
+              `${intl.formatMessage(titlesIntl.theOrder)} ${
+                row.orderId
+              } ${intl.formatMessage(titlesIntl.wasConfirmed)}`
+            )
+          } else {
+            // aca habria que ver algo como intentar de actualizar el documento mas adelante
+            errorArrayTemp.push(
+              `${intl.formatMessage(titlesIntl.theOrder)} ${
+                row.orderId
+              } ${intl.formatMessage(titlesIntl.wasNotConfirmed)}`
+            )
+          }
         } else {
           errorArrayTemp.push(
             `${intl.formatMessage(titlesIntl.theOrder)} ${

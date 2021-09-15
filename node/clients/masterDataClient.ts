@@ -37,10 +37,12 @@ export default class MasterDataClient extends ExternalClient {
     )
   }
 
-  public async masterDataClient(id: string, body: SaveDataInMasterDataBody) {
-    return this.http.patch(
+  public async updateDocument(id: string, body: SaveDataInMasterDataBody) {
+    await this.http.patch(
       `/pharmaOrders/documents/${id}?_schema=pharma-orders`,
       body
     )
+
+    return { status: 200 }
   }
 }

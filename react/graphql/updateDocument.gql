@@ -1,0 +1,8 @@
+mutation updateDocument(
+  $documentId: String
+  $body: BodyUpdateDocumentMasterData
+) {
+  updateDocument(documentId: $documentId, body: $body) {
+    status
+  }
+}

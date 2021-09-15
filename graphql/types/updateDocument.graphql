@@ -1,0 +1,8 @@
+input BodyUpdateDocumentMasterData {
+  orderId: String
+  status: String
+}
+
+type UpdateDocumentResponse {
+  status: Int
+}

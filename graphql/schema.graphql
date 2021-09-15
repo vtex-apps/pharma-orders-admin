@@ -5,4 +5,8 @@ type Query {
 
 type Mutation {
   cancelOrder(orderId: String): CancelOrderResponse
+  updateDocument(
+    documentId: String
+    body: BodyUpdateDocumentMasterData
+  ): UpdateDocumentResponse
 }
