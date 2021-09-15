@@ -44,7 +44,7 @@ export default function FilesTable({ orderId }: ProductTableProps) {
 
   return (
     <div>
-      {!filesObject && (
+      {(!filesObject || filesObject.length === 0) && (
         <Tag color="#134CD8" variation="low">
           {withoutPrescription}
         </Tag>
