@@ -155,17 +155,137 @@ export default function OrdersTable({ orderList }: TableProps) {
 
   async function handleApproveAction(selectedRows: any) {
     loadingAlert()
-    console.info('handleApproveAction selectedRows', selectedRows)
-    setMessageArrayError(['Error1', 'Error2'])
-    setErrorArray(true)
+    const tempItems = items
+    const successArrayTemp: string[] = []
+    const errorArrayTemp: string[] = []
+
+    for await (const row of selectedRows) {
+      if (row.status === 'created') {
+        /*
+        const dataFromMutation = await cancelOrderMutation({
+          variables: {
+            orderId: row.orderId,
+          },
+        })
+
+        const { status } = dataFromMutation.data.cancelOrder
+        */
+        const status = 200
+
+        if (status === 200) {
+          tempItems[row.id].status = 'approved'
+          successArrayTemp.push(
+            `${intl.formatMessage(titlesIntl.theOrder)} ${
+              row.orderId
+            } ${intl.formatMessage(titlesIntl.wasApproved)}`
+          )
+        } else {
+          errorArrayTemp.push(
+            `${intl.formatMessage(titlesIntl.theOrder)} ${
+              row.orderId
+            } ${intl.formatMessage(titlesIntl.wasNotApproved)}`
+          )
+        }
+      } else if (row.status === 'approved' || row.status === 'confirmed') {
+        errorArrayTemp.push(
+          `${intl.formatMessage(titlesIntl.theOrder)} ${
+            row.orderId
+          } ${intl.formatMessage(titlesIntl.wasAlreadyApproved)}`
+        )
+      } else {
+        errorArrayTemp.push(
+          `${intl.formatMessage(titlesIntl.theOrder)} ${
+            row.orderId
+          } ${intl.formatMessage(titlesIntl.isCanceled)}`
+        )
+      }
+    }
+
+    if (tempItems.length > 0) {
+      setItems(tempItems)
+    }
+
+    if (successArrayTemp.length > 0) {
+      setSuccessArray(true)
+      setMessageArraySuccess(successArrayTemp)
+    }
+
+    if (errorArrayTemp.length > 0) {
+      setErrorArray(true)
+      setMessageArrayError(errorArrayTemp)
+    }
+
     setLoading(false)
   }
 
   async function handleConfirmAction(selectedRows: any) {
     loadingAlert()
-    console.info('handleConfirmAction selectedRows', selectedRows)
-    setMessageArrayError(['Error3', 'Error4'])
-    setErrorArray(true)
+    const tempItems = items
+    const successArrayTemp: string[] = []
+    const errorArrayTemp: string[] = []
+
+    for await (const row of selectedRows) {
+      if (row.status === 'approved') {
+        /*
+        const dataFromMutation = await cancelOrderMutation({
+          variables: {
+            orderId: row.orderId,
+          },
+        })
+
+        const { status } = dataFromMutation.data.cancelOrder
+        */
+        const status = 200
+
+        if (status === 200) {
+          tempItems[row.id].status = 'confirmed'
+          successArrayTemp.push(
+            `${intl.formatMessage(titlesIntl.theOrder)} ${
+              row.orderId
+            } ${intl.formatMessage(titlesIntl.wasConfirmed)}`
+          )
+        } else {
+          errorArrayTemp.push(
+            `${intl.formatMessage(titlesIntl.theOrder)} ${
+              row.orderId
+            } ${intl.formatMessage(titlesIntl.wasNotConfirmed)}`
+          )
+        }
+      } else if (row.status === 'confirmed') {
+        errorArrayTemp.push(
+          `${intl.formatMessage(titlesIntl.theOrder)} ${
+            row.orderId
+          } ${intl.formatMessage(titlesIntl.wasAlreadyConfirmed)}`
+        )
+      } else if (row.status === 'created') {
+        errorArrayTemp.push(
+          `${intl.formatMessage(titlesIntl.theOrder)} ${
+            row.orderId
+          } ${intl.formatMessage(titlesIntl.approvedBeforeConfirming)}`
+        )
+      } else {
+        errorArrayTemp.push(
+          `${intl.formatMessage(titlesIntl.theOrder)} ${
+            row.orderId
+          } ${intl.formatMessage(titlesIntl.isCanceled)}`
+        )
+      }
+    }
+
+    if (tempItems.length > 0) {
+      setItems(tempItems)
+    }
+
+    if (successArrayTemp.length > 0) {
+      setSuccessArray(true)
+      setMessageArraySuccess(successArrayTemp)
+    }
+
+    if (errorArrayTemp.length > 0) {
+      setErrorArray(true)
+      setMessageArrayError(errorArrayTemp)
+    }
+
     setLoading(false)
   }
 
@@ -442,10 +562,10 @@ export default function OrdersTable({ orderList }: TableProps) {
 
   function statusSelectorObject({ values, onChangeObjectCallback }: any) {
     const initialValue = {
-      [canceled]: true,
       [created]: true,
       [approved]: true,
       [confirmed]: true,
+      [canceled]: true,
       ...(values || {}),
     }
 

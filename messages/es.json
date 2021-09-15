@@ -35,5 +35,13 @@
   "admin/admin.app.pharma-orders.canceled": "Cancelada",
   "admin/admin.app.pharma-orders.created": "Creada",
   "admin/admin.app.pharma-orders.approved": "Aprobada",
-  "admin/admin.app.pharma-orders.confirmed": "Confirmada"
+  "admin/admin.app.pharma-orders.confirmed": "Confirmada",
+  "admin/admin.app.pharma-orders.wasApproved": "fue aprobada con exito.",
+  "admin/admin.app.pharma-orders.wasNotApproved": "no fue aprobada.",
+  "admin/admin.app.pharma-orders.wasAlreadyApproved": "ya estaba aprobada.",
+  "admin/admin.app.pharma-orders.wasConfirmed": "fue confirmada con exito.",
+  "admin/admin.app.pharma-orders.wasNotConfirmed": "no fue confirmada.",
+  "admin/admin.app.pharma-orders.wasAlreadyConfirmed": "ya fue confirmada.",
+  "admin/admin.app.pharma-orders.approvedBeforeConfirming": "debe estar aprovada antes de confirmar.",
+  "admin/admin.app.pharma-orders.isCanceled": "está cancelada."
 }
