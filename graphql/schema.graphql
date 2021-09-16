@@ -1,6 +1,8 @@
 type Query {
   getData: GetDataResponse
   getOrder(orderId: String): GetOrderResponse
+  getOrderStatus(orderId: String): GetOrderStatusResponse
+  getPaymentTransaction(orderId: String): GetPaymentTransactionResponse
 }
 
 type Mutation {
@@ -9,4 +11,13 @@ type Mutation {
     documentId: String
     body: BodyUpdateDocumentMasterData
   ): UpdateDocumentResponse
+  paymentNotification(
+    orderId: String
+    paymentId: String
+  ): PaymentNotificationResponse
+  startHandlingOrder(orderId: String): StartHandlingOrderResponse
+  invoiceOrder(
+    orderId: String
+    bodyInvoice: BodyInvoiceOrder
+  ): InvoiceOrderResponse
 }

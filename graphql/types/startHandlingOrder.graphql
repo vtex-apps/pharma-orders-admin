@@ -1,0 +1,3 @@
+type StartHandlingOrderResponse {
+  status: Int
+}

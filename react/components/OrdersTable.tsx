@@ -13,7 +13,7 @@ import useTableMeasures from '@vtex/styleguide/lib/EXPERIMENTAL_Table/hooks/useT
 import useCheckboxTree from '@vtex/styleguide/lib/EXPERIMENTAL_useCheckboxTree/index'
 import React, { useState, useEffect, useCallback } from 'react'
 import { useIntl } from 'react-intl'
-import { useMutation } from 'react-apollo'
+import { useMutation, useQuery } from 'react-apollo'
 
 import { titlesIntl } from '../utils/intl'
 import ProductsTable from './ProductsTable'
@@ -23,12 +23,22 @@ import { SuccessArrayMessage } from './SuccessMessage'
 import LoadingSpinner from './LoadingSpinner'
 import cancelOrder from '../graphql/cancelOrder.gql'
 import updateDocument from '../graphql/updateDocument.gql'
+import getPaymentTransaction from '../graphql/getPaymentTransaction.gql'
+import paymentNotification from '../graphql/paymentNotification.gql'
+import startHandlingOrder from '../graphql/startHandlingOrder.gql'
+import invoiceOrder from '../graphql/invoiceOrder.gql'
+import getOrderStatus from '../graphql/getOrderStatus.gql'
 
 export default function OrdersTable({ orderList }: TableProps) {
   const intl = useIntl()
   const [items, setItems] = useState(orderList)
   const [cancelOrderMutation] = useMutation(cancelOrder)
   const [updateDocumentMutation] = useMutation(updateDocument)
+  const getPaymentTransactionQuery = useQuery(getPaymentTransaction)
+  const [paymentNotificationMutation] = useMutation(paymentNotification)
+  const [startHandlingOrderMutation] = useMutation(startHandlingOrder)
+  const [invoiceOrderMutation] = useMutation(invoiceOrder)
+  const getOrderStatusQuery = useQuery(getOrderStatus)
 
   // const [error, setError] = useState(false)
   const [errorArray, setErrorArray] = useState(false)
@@ -125,6 +135,27 @@ export default function OrdersTable({ orderList }: TableProps) {
         return <FilesColumn orderId={data} />
       },
     },
+    {
+      id: 'invoice',
+      title: 'Invoice Number',
+      cellRenderer: ({ data }: any) => {
+        return (
+          <Input
+            defaultValue={data.invoiceNumber}
+            onChange={(e: any) => {
+              const tempItems = items
+
+              tempItems[data.rowId].invoice = {
+                rowId: data.rowId,
+                invoiceNumber: e.target.value,
+              }
+              setItems(tempItems)
+            }}
+            placeholder="Placeholder"
+          />
+        )
+      },
+    },
   ]
 
   const [isProductModalOpen, setIsProductModalOpen] = useState(false)
@@ -164,16 +195,19 @@ export default function OrdersTable({ orderList }: TableProps) {
 
     for await (const row of selectedRows) {
       console.info('row', row)
+      if (row.id === 'VTEX_CheckboxTreeRoot') {
+        continue
+      }
 
       if (row.status === 'created') {
         /*
-        const dataFromMutation = await cancelOrderMutation({
+        const dataFromUpdateDocumentMutation = await cancelOrderMutation({
           variables: {
             orderId: row.orderId,
           },
         })
 
-        const { status } = dataFromMutation.data.cancelOrder
+        const { status } = dataFromUpdateDocumentMutation.data.cancelOrder
         */
         const statusFromSendNotification = 200
 
@@ -183,15 +217,15 @@ export default function OrdersTable({ orderList }: TableProps) {
             status: 'approved',
           }
 
-          const dataFromMutation = await updateDocumentMutation({
+          const dataFromUpdateDocumentMutation = await updateDocumentMutation({
             variables: {
               documentId: row.idMasterData,
               body: bodyToMasterData,
             },
           })
 
-          const statusUpdateDocument =
-            dataFromMutation.data.updateDocument.status
+          const { status: statusUpdateDocument } =
+            dataFromUpdateDocumentMutation.data.updateDocument
 
           if (statusUpdateDocument === 200) {
             tempItems[row.id].status = 'approved'
@@ -247,6 +281,35 @@ export default function OrdersTable({ orderList }: TableProps) {
     setLoading(false)
   }
 
+  async function consult(orderId: string): Promise<any> {
+    const dataFromGetOrderStatusQuery = await getOrderStatusQuery.refetch({
+      orderId,
+    })
+
+    console.info('dataFromGetOrderStatusQuery', dataFromGetOrderStatusQuery)
+    const statusOfOrder =
+      dataFromGetOrderStatusQuery.data.getOrderStatus.data.status
+
+    console.info('statusOfOrder inside', statusOfOrder)
+
+    if (statusOfOrder === 'ready-for-handling') {
+      return true
+    }
+
+    const awaitTimeout = (delay: number) =>
+      new Promise((resolve) => setTimeout(resolve, delay * 1000))
+
+    await awaitTimeout(2)
+
+    return validarReintento(orderId)
+  }
+
+  async function validarReintento(orderId: string) {
+    const response = await consult(orderId)
+
+    return response
+  }
+
   async function handleConfirmAction(selectedRows: any) {
     loadingAlert()
     const tempItems = items
@@ -255,44 +318,163 @@ export default function OrdersTable({ orderList }: TableProps) {
 
     for await (const row of selectedRows) {
       console.info('row', row)
+      if (row.id === 'VTEX_CheckboxTreeRoot') {
+        continue
+      }
 
       if (row.status === 'approved') {
-        /*
-        const dataFromMutation = await cancelOrderMutation({
-          variables: {
-            orderId: row.orderId,
-          },
-        })
+        const { invoiceNumber } = row.invoice
 
-        const { status } = dataFromMutation.data.cancelOrder
-        */
-        const statusFromServices = 200
+        if (invoiceNumber) {
+          const dataFromGetPaymentTransactionQuery =
+            await getPaymentTransactionQuery.refetch({
+              orderId: row.orderId,
+            })
 
-        if (statusFromServices === 200) {
-          const bodyToMasterData: BodyUpdateDocument = {
-            orderId: row.orderId,
-            status: 'confirmed',
-          }
+          const { status: statusPaymentTransaction } =
+            dataFromGetPaymentTransactionQuery.data.getPaymentTransaction
 
-          const dataFromMutation = await updateDocumentMutation({
-            variables: {
-              documentId: row.idMasterData,
-              body: bodyToMasterData,
-            },
-          })
+          if (statusPaymentTransaction === 200) {
+            const { payments } =
+              dataFromGetPaymentTransactionQuery.data.getPaymentTransaction.data
 
-          const statusUpdateDocument =
-            dataFromMutation.data.updateDocument.status
-
-          if (statusUpdateDocument === 200) {
-            tempItems[row.id].status = 'confirmed'
-            successArrayTemp.push(
-              `${intl.formatMessage(titlesIntl.theOrder)} ${
-                row.orderId
-              } ${intl.formatMessage(titlesIntl.wasConfirmed)}`
+            const promiseInfo = payments.find(
+              (p: any) => p.paymentSystemName === 'Promissory'
             )
+
+            const paymentId = promiseInfo.id
+
+            const dataFromPaymentNotificationMutation =
+              await paymentNotificationMutation({
+                variables: {
+                  orderId: row.orderId,
+                  paymentId,
+                },
+              })
+
+            const { status: statusPaymentNotification } =
+              dataFromPaymentNotificationMutation.data.paymentNotification
+
+            if (await validarReintento(row.orderId)) {
+              console.info('ok')
+              if (statusPaymentNotification === 204) {
+                console.info('statusPaymentNotification === 204')
+                const dataFromStartHandlingOrderMutation =
+                  await startHandlingOrderMutation({
+                    variables: {
+                      orderId: row.orderId,
+                    },
+                  })
+
+                console.info(
+                  'dataFromStartHandlingOrderMutation',
+                  dataFromStartHandlingOrderMutation
+                )
+                const { status: statusStartHandlingOrder } =
+                  dataFromStartHandlingOrderMutation.data.startHandlingOrder
+
+                console.info(
+                  'statusStartHandlingOrder',
+                  statusStartHandlingOrder
+                )
+
+                const dataFromGetOrderStatusQuery =
+                  await getOrderStatusQuery.refetch({
+                    orderId: row.orderId,
+                  })
+
+                console.info(
+                  'dataFromGetOrderStatusQuery',
+                  dataFromGetOrderStatusQuery
+                )
+                const statusOfOrder =
+                  dataFromGetOrderStatusQuery.data.getOrderStatus.data.status
+
+                console.info('statusOfOrder', statusOfOrder)
+
+                if (
+                  statusStartHandlingOrder === 200 &&
+                  statusOfOrder === 'handling'
+                ) {
+                  // Order invoice notification
+                  const issuanceDate = Date.now()
+
+                  console.info('datetime', issuanceDate)
+
+                  const invoiceBody: InvoiceBody = {
+                    type: 'Output',
+                    issuanceDate: 'issuanceDate',
+                    invoiceNumber,
+                    invoiceValue: 9003,
+                    items: [
+                      {
+                        id: '1',
+                        quantity: 1,
+                        price: 9003,
+                      },
+                    ],
+                  }
+
+                  const dataFromInvoiceOrderMutation =
+                    await invoiceOrderMutation({
+                      variables: {
+                        orderId: row.orderId,
+                        body: invoiceBody,
+                      },
+                    })
+
+                  const { status: statusInvoiceOrder } =
+                    dataFromInvoiceOrderMutation.data.invoiceOrder
+
+                  console.info('statusInvoiceOrder', statusInvoiceOrder)
+
+                  const bodyToMasterData: BodyUpdateDocument = {
+                    orderId: row.orderId,
+                    status: 'confirmed',
+                  }
+
+                  const dataFromUpdateDocumentMutation =
+                    await updateDocumentMutation({
+                      variables: {
+                        documentId: row.idMasterData,
+                        body: bodyToMasterData,
+                      },
+                    })
+
+                  const { status: statusUpdateDocument } =
+                    dataFromUpdateDocumentMutation.data.updateDocument
+
+                  if (statusUpdateDocument === 200) {
+                    tempItems[row.id].status = 'confirmed'
+                    successArrayTemp.push(
+                      `${intl.formatMessage(titlesIntl.theOrder)} ${
+                        row.orderId
+                      } ${intl.formatMessage(titlesIntl.wasConfirmed)}`
+                    )
+                  } else {
+                    // aca habria que ver algo como intentar de actualizar el documento mas adelante
+                    errorArrayTemp.push(
+                      `${intl.formatMessage(titlesIntl.theOrder)} ${
+                        row.orderId
+                      } ${intl.formatMessage(titlesIntl.wasNotConfirmed)}`
+                    )
+                  }
+                } else {
+                  errorArrayTemp.push(
+                    `${intl.formatMessage(titlesIntl.theOrder)} ${
+                      row.orderId
+                    } ${intl.formatMessage(titlesIntl.wasNotConfirmed)}`
+                  )
+                }
+              } else {
+                errorArrayTemp.push(
+                  `${intl.formatMessage(titlesIntl.theOrder)} ${
+                    row.orderId
+                  } ${intl.formatMessage(titlesIntl.wasNotConfirmed)}`
+                )
+              }
+            }
           } else {
-            // aca habria que ver algo como intentar de actualizar el documento mas adelante
             errorArrayTemp.push(
               `${intl.formatMessage(titlesIntl.theOrder)} ${
                 row.orderId
@@ -303,7 +485,9 @@ export default function OrdersTable({ orderList }: TableProps) {
           errorArrayTemp.push(
             `${intl.formatMessage(titlesIntl.theOrder)} ${
               row.orderId
-            } ${intl.formatMessage(titlesIntl.wasNotConfirmed)}`
+            } ${intl.formatMessage(
+              titlesIntl.wasNotConfirmed
+            )} PORQUE NO TIENE INVOICE NUMBER`
           )
         }
       } else if (row.status === 'confirmed') {
@@ -351,14 +535,19 @@ export default function OrdersTable({ orderList }: TableProps) {
     const errorArrayTemp: string[] = []
 
     for await (const row of selectedRows) {
+      if (row.id === 'VTEX_CheckboxTreeRoot') {
+        continue
+      }
+
+      console.info('row', row)
       if (row.status !== 'canceled') {
-        const dataFromMutation = await cancelOrderMutation({
+        const dataFromUpdateDocumentMutation = await cancelOrderMutation({
           variables: {
             orderId: row.orderId,
           },
         })
 
-        const { status } = dataFromMutation.data.cancelOrder
+        const { status } = dataFromUpdateDocumentMutation.data.cancelOrder
 
         if (status === 200) {
           tempItems[row.id].status = 'canceled'

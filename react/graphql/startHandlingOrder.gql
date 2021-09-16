@@ -1,0 +1,5 @@
+mutation startHandlingOrder($orderId: String) {
+  startHandlingOrder(orderId: $orderId) {
+    status
+  }
+}

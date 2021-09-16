@@ -43,5 +43,6 @@
   "admin/admin.app.pharma-orders.wasNotConfirmed": "não foi confirmado.",
   "admin/admin.app.pharma-orders.wasAlreadyConfirmed": "já foi confirmado.",
   "admin/admin.app.pharma-orders.approvedBeforeConfirming": "deve ser aprovado antes de confirmar.",
-  "admin/admin.app.pharma-orders.isCanceled": "foi cancelado."
+  "admin/admin.app.pharma-orders.isCanceled": "foi cancelado.",
+  "admin/admin.app.pharma-orders.noOrdersYet": "Ainda não há pedidos farmacêuticos!"
 }

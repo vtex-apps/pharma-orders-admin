@@ -27,4 +27,28 @@ export default class OMS extends ExternalClient {
   public async cancelOrder(orderId: string) {
     return this.http.postRaw(`/${orderId}/cancel`)
   }
+
+  public async getPaymentTransaction(orderId: string) {
+    return this.http.getRaw(`/${orderId}/payment-transaction`)
+  }
+
+  public async paymentNotification(orderId: string, paymentId: string) {
+    return this.http.postRaw(
+      `/${orderId}/payments/${paymentId}/payment-notification`
+    )
+  }
+
+  public async startHandlingOrder(orderId: string) {
+    try {
+      await this.http.postRaw(`/${orderId}/start-handling`)
+    } catch (error) {
+      console.info('error', error)
+    }
+
+    return { status: 200 }
+  }
+
+  public async invoiceOrder(orderId: string, bodyInvoice: InvoiceBody) {
+    return this.http.postRaw(`/${orderId}/invoice`, bodyInvoice)
+  }
 }

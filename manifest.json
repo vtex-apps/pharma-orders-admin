@@ -1,7 +1,7 @@
 {
   "vendor": "vtexarg",
   "name": "pharma-orders-admin",
-  "version": "0.0.12",
+  "version": "0.0.1",
   "title": "Pharma Orders Admin",
   "description": "",
   "scripts": {
@@ -75,6 +75,9 @@
     },
     {
       "name": "OMSViewer"
+    },
+    {
+      "name": "AcessaTodosPedidos"
     },
     {
       "name": "ADMIN_DS"

@@ -14,6 +14,10 @@ declare global {
     orderId: sting
     products: string
     files: string
+    invoice: {
+      rowId: number
+      invoiceNumber: string
+    }
   }
 
   export interface TableProps {
@@ -56,5 +60,19 @@ declare global {
   interface BodyUpdateDocument {
     orderId: string
     status: string
+  }
+
+  interface ItemsInvoice {
+    id: string
+    quantity: number
+    price: number
+  }
+
+  interface InvoiceBody {
+    type: string
+    issuanceDate: string
+    invoiceNumber: string
+    invoiceValue: number
+    items: [ItemsInvoice]
   }
 }

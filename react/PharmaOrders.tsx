@@ -27,6 +27,10 @@ export default function PharmaOrders() {
         orderId: orderFromMasterData.orderId,
         products: orderFromMasterData.orderId,
         files: orderFromMasterData.orderId,
+        invoice: {
+          rowId: index,
+          invoiceNumber: '',
+        },
       }
 
       return newOrder
@@ -41,8 +45,9 @@ export default function PharmaOrders() {
       }
     >
       <PageBlock variation="full">
-        {orderList?.length > 0 && <OrdersTable orderList={orderList} />}
         {!orderList && <LoadingSpinner />}
+        {orderList?.length > 0 && <OrdersTable orderList={orderList} />}
+        {orderList?.length === 0 && intl.formatMessage(titlesIntl.noOrdersYet)}
       </PageBlock>
     </Layout>
   )

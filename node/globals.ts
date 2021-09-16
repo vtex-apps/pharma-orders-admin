@@ -74,4 +74,18 @@ declare global {
   interface State extends RecorderState {
     documentOfOrder: DocumentOfOrder
   }
+
+  interface ItemsInvoice {
+    id: string
+    quantity: number
+    price: number
+  }
+
+  interface InvoiceBody {
+    type: string
+    issuanceDate: string
+    invoiceNumber: string
+    invoiceValue: number
+    items: [ItemsInvoice]
+  }
 }

@@ -1,0 +1,17 @@
+input ItemsInvoice {
+  id: String
+  quantity: Int
+  price: Int
+}
+
+input BodyInvoiceOrder {
+  type: String
+  issuanceDate: String
+  invoiceNumber: String
+  invoiceValue: Int
+  items: [ItemsInvoice]
+}
+
+type InvoiceOrderResponse {
+  status: Int
+}

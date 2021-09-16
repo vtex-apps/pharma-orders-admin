@@ -1,0 +1,5 @@
+mutation paymentNotification($orderId: String, $paymentId: String) {
+  paymentNotification(orderId: $orderId, paymentId: $paymentId) {
+    status
+  }
+}

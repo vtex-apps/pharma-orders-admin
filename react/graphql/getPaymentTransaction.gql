@@ -1,0 +1,17 @@
+query getPaymentTransaction($orderId: String) {
+  getPaymentTransaction(orderId: $orderId) {
+    status
+    data {
+      status
+      isActive
+      transactionId
+      merchantName
+      payments {
+        id
+        paymentSystem
+        paymentSystemName
+        value
+      }
+    }
+  }
+}

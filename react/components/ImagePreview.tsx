@@ -4,5 +4,9 @@ import Magnifier from 'react-magnifier'
 import '../style/ImagePreview.global.css'
 
 export default function ImagePreview({ url }: ImagePreviewProps) {
-  return <Magnifier src={url} />
+  return (
+    <div className="wrapMagnifier">
+      <Magnifier src={url} />
+    </div>
+  )
 }

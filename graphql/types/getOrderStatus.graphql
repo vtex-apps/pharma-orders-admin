@@ -1,0 +1,8 @@
+type DataGetOrderStatusResponse {
+  status: String
+}
+
+type GetOrderStatusResponse {
+  status: Int
+  data: DataGetOrderStatusResponse
+}

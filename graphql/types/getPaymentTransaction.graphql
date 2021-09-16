@@ -1,0 +1,19 @@
+type Payments {
+  id: String
+  paymentSystem: String
+  paymentSystemName: String
+  value: Int
+}
+
+type DataGetPaymentTransactionResponse {
+  status: String
+  isActive: String
+  transactionId: String
+  merchantName: String
+  payments: [Payments]
+}
+
+type GetPaymentTransactionResponse {
+  status: Int
+  data: DataGetPaymentTransactionResponse
+}

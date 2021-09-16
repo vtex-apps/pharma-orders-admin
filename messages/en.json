@@ -43,5 +43,5 @@
   "admin/admin.app.pharma-orders.wasNotConfirmed": "was not confirmed.",
   "admin/admin.app.pharma-orders.wasAlreadyConfirmed": "was already confirmed.",
   "admin/admin.app.pharma-orders.approvedBeforeConfirming": "must be approved before confirming.",
-  "admin/admin.app.pharma-orders.isCanceled": "is canceled."
+  "admin/admin.app.pharma-orders.noOrdersYet": "No pharma orders yet!"
 }
