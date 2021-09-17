@@ -18,6 +18,10 @@ declare global {
       rowId: number
       invoiceNumber: string
     }
+    observations: {
+      rowId: number
+      text: string
+    }
   }
 
   export interface TableProps {
@@ -29,6 +33,7 @@ declare global {
     orderId: sting
     status: string
     invoiceNumber: string
+    observations: string
   }
 
   export interface ProductTableProps {

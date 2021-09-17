@@ -33,7 +33,7 @@ export default class MasterDataClient extends ExternalClient {
 
   public async getIdOfOrder(orderId: string) {
     return this.http.getRaw(
-      `/pharmaOrders/search?_schema=pharma-orders&_fields=id,orderId,status&_where=orderId=${orderId}`
+      `/pharmaOrders/search?_schema=pharma-orders&_fields=id,orderId,status,invoiceNumber,observations&_where=orderId=${orderId}`
     )
   }
 

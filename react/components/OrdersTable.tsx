@@ -8,6 +8,7 @@ import {
   Button,
   Modal,
   Tag,
+  Textarea,
 } from 'vtex.styleguide'
 import useTableMeasures from '@vtex/styleguide/lib/EXPERIMENTAL_Table/hooks/useTableMeasures'
 import useCheckboxTree from '@vtex/styleguide/lib/EXPERIMENTAL_useCheckboxTree/index'
@@ -173,6 +174,26 @@ export default function OrdersTable({ orderList }: TableProps) {
               errorCondition &&
               intl.formatMessage(titlesIntl.placeholderInvoiceNumber)
             }
+          />
+        )
+      },
+    },
+    {
+      id: 'observations',
+      title: 'observations',
+      cellRenderer: ({ data }: any) => {
+        return (
+          <Textarea
+            defaultValue={data.text}
+            onChange={(e: any) => {
+              const tempItems = items
+
+              tempItems[data.rowId].observations = {
+                rowId: data.rowId,
+                text: e.target.value,
+              }
+              setItems(tempItems)
+            }}
           />
         )
       },

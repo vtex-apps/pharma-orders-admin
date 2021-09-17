@@ -3,6 +3,7 @@ type DataGetDataResponse {
   orderId: String
   status: String
   invoiceNumber: String
+  observations: String
 }
 
 type GetDataResponse {

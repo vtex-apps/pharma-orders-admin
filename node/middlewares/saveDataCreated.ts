@@ -14,6 +14,7 @@ export async function saveDataCreated(
       orderId,
       status: 'created',
       invoiceNumber: '',
+      observations: '',
     }
 
     console.info('body', body)
