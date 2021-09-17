@@ -141,6 +141,12 @@ export default function OrdersTable({ orderList }: TableProps) {
       id: 'invoice',
       title: intl.formatMessage(titlesIntl.invoiceNumber),
       cellRenderer: ({ data }: any) => {
+        const itemIsChecked = (item: any) =>
+          item.id === data.rowId && item.status === 'approved'
+
+        // eslint-disable-next-line @typescript-eslint/no-use-before-define
+        const checked = checkboxes.checkedItems.some(itemIsChecked)
+
         return (
           <Input
             defaultValue={data.invoiceNumber}
@@ -156,6 +162,7 @@ export default function OrdersTable({ orderList }: TableProps) {
             placeholder={intl.formatMessage(
               titlesIntl.placeholderInvoiceNumber
             )}
+            disabled={!checked}
           />
         )
       },

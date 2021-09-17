@@ -45,6 +45,6 @@
   "admin/admin.app.pharma-orders.approvedBeforeConfirming": "must be approved before confirming.",
   "admin/admin.app.pharma-orders.noOrdersYet": "No pharma orders yet!",
   "admin/admin.app.pharma-orders.invoiceNumber": "Invoice Number",
-  "admin/admin.app.pharma-orders.placeholderInvoiceNumber": "placeholderInvoiceNumber",
-  "admin/admin.app.pharma-orders.noInvoiceNumber": "because it does not have invoice number."
+  "admin/admin.app.pharma-orders.placeholderInvoiceNumber": "Enter it if you want to confirm",
+  "admin/admin.app.pharma-orders.noInvoiceNumber": "It does not have invoice number."
 }
