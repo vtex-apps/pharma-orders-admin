@@ -49,6 +49,18 @@ export default class OMS extends ExternalClient {
   }
 
   public async invoiceOrder(orderId: string, bodyInvoice: InvoiceBody) {
-    return this.http.postRaw(`/${orderId}/invoice`, bodyInvoice)
+    try {
+      console.info('orderId', orderId)
+      console.info('bodyInvoice', bodyInvoice)
+      const aux = await this.http.postRaw(`/${orderId}/invoice`, bodyInvoice)
+
+      console.info('aux', aux)
+
+      return aux
+    } catch (error) {
+      console.info('error', error)
+
+      return error
+    }
   }
 }

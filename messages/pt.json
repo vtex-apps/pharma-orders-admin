@@ -44,5 +44,8 @@
   "admin/admin.app.pharma-orders.wasAlreadyConfirmed": "já foi confirmado.",
   "admin/admin.app.pharma-orders.approvedBeforeConfirming": "deve ser aprovado antes de confirmar.",
   "admin/admin.app.pharma-orders.isCanceled": "foi cancelado.",
-  "admin/admin.app.pharma-orders.noOrdersYet": "Ainda não há pedidos farmacêuticos!"
+  "admin/admin.app.pharma-orders.noOrdersYet": "Ainda não há pedidos farmacêuticos!",
+  "admin/admin.app.pharma-orders.invoiceNumber": "Número da fatura",
+  "admin/admin.app.pharma-orders.placeholderInvoiceNumber": "placeholderInvoiceNumber",
+  "admin/admin.app.pharma-orders.noInvoiceNumber": "porque não possui o número da fatura."
 }

@@ -28,6 +28,7 @@ import paymentNotification from '../graphql/paymentNotification.gql'
 import startHandlingOrder from '../graphql/startHandlingOrder.gql'
 import invoiceOrder from '../graphql/invoiceOrder.gql'
 import getOrderStatus from '../graphql/getOrderStatus.gql'
+import getOrderDataToInvoice from '../graphql/getOrderDataToInvoice.gql'
 
 export default function OrdersTable({ orderList }: TableProps) {
   const intl = useIntl()
@@ -39,6 +40,7 @@ export default function OrdersTable({ orderList }: TableProps) {
   const [startHandlingOrderMutation] = useMutation(startHandlingOrder)
   const [invoiceOrderMutation] = useMutation(invoiceOrder)
   const getOrderStatusQuery = useQuery(getOrderStatus)
+  const getOrderDataToInvoiceQuery = useQuery(getOrderDataToInvoice)
 
   // const [error, setError] = useState(false)
   const [errorArray, setErrorArray] = useState(false)
@@ -137,7 +139,7 @@ export default function OrdersTable({ orderList }: TableProps) {
     },
     {
       id: 'invoice',
-      title: 'Invoice Number',
+      title: intl.formatMessage(titlesIntl.invoiceNumber),
       cellRenderer: ({ data }: any) => {
         return (
           <Input
@@ -151,7 +153,9 @@ export default function OrdersTable({ orderList }: TableProps) {
               }
               setItems(tempItems)
             }}
-            placeholder="Placeholder"
+            placeholder={intl.formatMessage(
+              titlesIntl.placeholderInvoiceNumber
+            )}
           />
         )
       },
@@ -387,8 +391,8 @@ export default function OrdersTable({ orderList }: TableProps) {
                   'dataFromGetOrderStatusQuery',
                   dataFromGetOrderStatusQuery
                 )
-                const statusOfOrder =
-                  dataFromGetOrderStatusQuery.data.getOrderStatus.data.status
+                const { status: statusOfOrder } =
+                  dataFromGetOrderStatusQuery.data.getOrderStatus.data
 
                 console.info('statusOfOrder', statusOfOrder)
 
@@ -397,62 +401,97 @@ export default function OrdersTable({ orderList }: TableProps) {
                   statusOfOrder === 'handling'
                 ) {
                   // Order invoice notification
-                  const issuanceDate = Date.now()
+                  const issuanceDate = new Date(Date.now()).toISOString()
 
                   console.info('datetime', issuanceDate)
 
-                  const invoiceBody: InvoiceBody = {
-                    type: 'Output',
-                    issuanceDate: 'issuanceDate',
-                    invoiceNumber,
-                    invoiceValue: 9003,
-                    items: [
-                      {
-                        id: '1',
-                        quantity: 1,
-                        price: 9003,
-                      },
-                    ],
-                  }
-
-                  const dataFromInvoiceOrderMutation =
-                    await invoiceOrderMutation({
-                      variables: {
-                        orderId: row.orderId,
-                        body: invoiceBody,
-                      },
+                  const dataFromGetOrderDataToInvoiceQuery =
+                    await getOrderDataToInvoiceQuery.refetch({
+                      orderId: row.orderId,
                     })
 
-                  const { status: statusInvoiceOrder } =
-                    dataFromInvoiceOrderMutation.data.invoiceOrder
+                  console.info(
+                    'dataFromGetOrderDataToInvoiceQuery',
+                    dataFromGetOrderDataToInvoiceQuery
+                  )
 
-                  console.info('statusInvoiceOrder', statusInvoiceOrder)
+                  const { status: statusOfGetOrderDataToInvoice } =
+                    dataFromGetOrderDataToInvoiceQuery.data.getOrder
 
-                  const bodyToMasterData: BodyUpdateDocument = {
-                    orderId: row.orderId,
-                    status: 'confirmed',
-                  }
+                  if (statusOfGetOrderDataToInvoice === 200) {
+                    const { value: invoiceValue, items: itemsToInvoice } =
+                      dataFromGetOrderDataToInvoiceQuery.data.getOrder.data
 
-                  const dataFromUpdateDocumentMutation =
-                    await updateDocumentMutation({
-                      variables: {
-                        documentId: row.idMasterData,
-                        body: bodyToMasterData,
-                      },
-                    })
+                    const itemsToInvoiceBody = itemsToInvoice.map(
+                      (item: any) => {
+                        const itemAux = {
+                          id: item.id,
+                          quantity: item.quantity,
+                          price: item.price,
+                        }
 
-                  const { status: statusUpdateDocument } =
-                    dataFromUpdateDocumentMutation.data.updateDocument
-
-                  if (statusUpdateDocument === 200) {
-                    tempItems[row.id].status = 'confirmed'
-                    successArrayTemp.push(
-                      `${intl.formatMessage(titlesIntl.theOrder)} ${
-                        row.orderId
-                      } ${intl.formatMessage(titlesIntl.wasConfirmed)}`
+                        return itemAux
+                      }
                     )
+
+                    console.info('issuanceDate', issuanceDate)
+                    console.info('invoiceNumber', invoiceNumber)
+                    console.info('invoiceValue', invoiceValue)
+                    console.info('itemsToInvoiceBody', itemsToInvoiceBody)
+                    const bodyInvoice: InvoiceBody = {
+                      type: 'Output',
+                      issuanceDate,
+                      invoiceNumber,
+                      invoiceValue,
+                      items: itemsToInvoiceBody,
+                    }
+
+                    console.info('invoiceBody', bodyInvoice)
+                    const dataFromInvoiceOrderMutation =
+                      await invoiceOrderMutation({
+                        variables: {
+                          orderId: row.orderId,
+                          bodyInvoice,
+                        },
+                      })
+
+                    const { status: statusInvoiceOrder } =
+                      dataFromInvoiceOrderMutation.data.invoiceOrder
+
+                    console.info('statusInvoiceOrder', statusInvoiceOrder)
+
+                    const bodyToMasterData: BodyUpdateDocument = {
+                      orderId: row.orderId,
+                      status: 'confirmed',
+                    }
+
+                    const dataFromUpdateDocumentMutation =
+                      await updateDocumentMutation({
+                        variables: {
+                          documentId: row.idMasterData,
+                          body: bodyToMasterData,
+                        },
+                      })
+
+                    const { status: statusUpdateDocument } =
+                      dataFromUpdateDocumentMutation.data.updateDocument
+
+                    if (statusUpdateDocument === 200) {
+                      tempItems[row.id].status = 'confirmed'
+                      successArrayTemp.push(
+                        `${intl.formatMessage(titlesIntl.theOrder)} ${
+                          row.orderId
+                        } ${intl.formatMessage(titlesIntl.wasConfirmed)}`
+                      )
+                    } else {
+                      // aca habria que ver algo como intentar de actualizar el documento mas adelante
+                      errorArrayTemp.push(
+                        `${intl.formatMessage(titlesIntl.theOrder)} ${
+                          row.orderId
+                        } ${intl.formatMessage(titlesIntl.wasNotConfirmed)}`
+                      )
+                    }
                   } else {
-                    // aca habria que ver algo como intentar de actualizar el documento mas adelante
                     errorArrayTemp.push(
                       `${intl.formatMessage(titlesIntl.theOrder)} ${
                         row.orderId
@@ -487,7 +526,7 @@ export default function OrdersTable({ orderList }: TableProps) {
               row.orderId
             } ${intl.formatMessage(
               titlesIntl.wasNotConfirmed
-            )} PORQUE NO TIENE INVOICE NUMBER`
+            )} ${intl.formatMessage(titlesIntl.noInvoiceNumber)}`
           )
         }
       } else if (row.status === 'confirmed') {

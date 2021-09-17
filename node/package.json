@@ -1,11 +1,11 @@
 {
   "dependencies": {
-    "@vtex/api": "6.45.3",
+    "@vtex/api": "6.45.4",
     "@vtex/clients": "^2.17.0"
   },
   "devDependencies": {
     "@types/node": "^12.0.0",
-    "@vtex/api": "6.45.3",
+    "@vtex/api": "6.45.4",
     "typescript": "3.9.7"
   },
   "resolutions": {

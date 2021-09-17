@@ -15,6 +15,7 @@ export async function saveDataCreated(
       status: 'created',
     }
 
+    console.info('body', body)
     await masterDataClient.saveData(body)
     await next()
   } catch (error) {

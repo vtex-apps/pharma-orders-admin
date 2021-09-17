@@ -29,6 +29,9 @@ export async function getOrder(
         )
       }
     })
+    console.info('orderId', orderId)
+    console.info('idCategoriaMedicamentos', idCategoriaMedicamentos)
+    console.info('orderWithMedicamentos', orderWithMedicamentos)
 
     if (orderWithMedicamentos) {
       await next()

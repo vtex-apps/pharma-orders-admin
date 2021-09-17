@@ -3,6 +3,7 @@ type OrderItems {
   productId: String
   quantity: Int
   name: String
+  price: Int
 }
 
 type Fields {
@@ -21,6 +22,7 @@ type CustomData {
 
 type DataGetOrderResponse {
   items: [OrderItems]
+  value: Int
   customData: CustomData
 }
 

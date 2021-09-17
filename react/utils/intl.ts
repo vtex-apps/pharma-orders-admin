@@ -47,4 +47,7 @@ export const titlesIntl = defineMessages({
   approvedBeforeConfirming: { id: `${prefix}approvedBeforeConfirming` },
   isCanceled: { id: `${prefix}isCanceled` },
   noOrdersYet: { id: `${prefix}noOrdersYet` },
+  invoiceNumber: { id: `${prefix}invoiceNumber` },
+  placeholderInvoiceNumber: { id: `${prefix}placeholderInvoiceNumber` },
+  noInvoiceNumber: { id: `${prefix}noInvoiceNumber` },
 })
