@@ -13,6 +13,7 @@ export async function saveDataCreated(
     const body: SaveDataInMasterDataBody = {
       orderId,
       status: 'created',
+      invoiceNumber: '',
     }
 
     console.info('body', body)

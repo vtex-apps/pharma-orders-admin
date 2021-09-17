@@ -50,6 +50,7 @@ export default function OrdersTable({ orderList }: TableProps) {
   // const [message, setMessage] = useState('')
   const [messageArraySuccess, setMessageArraySuccess] = useState<string[]>([])
   const [messageArrayError, setMessageArrayError] = useState<string[]>([])
+  const [textInvoice, setTextInvoice] = useState('')
 
   const clearAlerts = useCallback(() => {
     // setError(false)
@@ -146,6 +147,7 @@ export default function OrdersTable({ orderList }: TableProps) {
 
         // eslint-disable-next-line @typescript-eslint/no-use-before-define
         const checked = checkboxes.checkedItems.some(itemIsChecked)
+        const errorCondition = !textInvoice && checked
 
         return (
           <Input
@@ -157,12 +159,20 @@ export default function OrdersTable({ orderList }: TableProps) {
                 rowId: data.rowId,
                 invoiceNumber: e.target.value,
               }
+              setTextInvoice(e.target.value)
               setItems(tempItems)
             }}
+            /*
             placeholder={intl.formatMessage(
               titlesIntl.placeholderInvoiceNumber
             )}
+            */
             disabled={!checked}
+            error={errorCondition}
+            errorMessage={
+              errorCondition &&
+              intl.formatMessage(titlesIntl.placeholderInvoiceNumber)
+            }
           />
         )
       },
@@ -226,6 +236,7 @@ export default function OrdersTable({ orderList }: TableProps) {
           const bodyToMasterData: BodyUpdateDocument = {
             orderId: row.orderId,
             status: 'approved',
+            invoiceNumber: '',
           }
 
           const dataFromUpdateDocumentMutation = await updateDocumentMutation({
@@ -470,6 +481,7 @@ export default function OrdersTable({ orderList }: TableProps) {
                     const bodyToMasterData: BodyUpdateDocument = {
                       orderId: row.orderId,
                       status: 'confirmed',
+                      invoiceNumber,
                     }
 
                     const dataFromUpdateDocumentMutation =
@@ -586,7 +598,13 @@ export default function OrdersTable({ orderList }: TableProps) {
       }
 
       console.info('row', row)
-      if (row.status !== 'canceled') {
+      if (row.status === 'confirmed') {
+        errorArrayTemp.push(
+          `${intl.formatMessage(titlesIntl.theOrder)} ${
+            row.orderId
+          } ${intl.formatMessage(titlesIntl.isConfirmed)}`
+        )
+      } else if (row.status !== 'canceled') {
         const dataFromUpdateDocumentMutation = await cancelOrderMutation({
           variables: {
             orderId: row.orderId,

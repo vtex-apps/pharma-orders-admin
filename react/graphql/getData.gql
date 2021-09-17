@@ -5,6 +5,7 @@ query getData {
       id
       orderId
       status
+      invoiceNumber
     }
   }
 }

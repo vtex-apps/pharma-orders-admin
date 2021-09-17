@@ -28,6 +28,7 @@ declare global {
     id: string
     orderId: sting
     status: string
+    invoiceNumber: string
   }
 
   export interface ProductTableProps {
@@ -60,6 +61,7 @@ declare global {
   interface BodyUpdateDocument {
     orderId: string
     status: string
+    invoiceNumber: string
   }
 
   interface ItemsInvoice {

@@ -65,6 +65,7 @@ declare global {
   interface SaveDataInMasterDataBody {
     orderId: string
     status: string
+    invoiceNumber: string
   }
   interface DocumentOfOrder {
     id: string

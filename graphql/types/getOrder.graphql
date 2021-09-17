@@ -20,10 +20,19 @@ type CustomData {
   customApps: [CustomApps]
 }
 
+type Package {
+  invoiceNumber: String
+}
+
+type PackageAttachment {
+  packages: [Package]
+}
+
 type DataGetOrderResponse {
   items: [OrderItems]
   value: Int
   customData: CustomData
+  packageAttachment: PackageAttachment
 }
 
 type GetOrderResponse {

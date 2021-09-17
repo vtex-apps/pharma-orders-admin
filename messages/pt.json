@@ -40,6 +40,7 @@
   "admin/admin.app.pharma-orders.wasNotApproved": "não foi aprovado.",
   "admin/admin.app.pharma-orders.wasAlreadyApproved": "já foi aprovado.",
   "admin/admin.app.pharma-orders.wasConfirmed": "foi confirmado com sucesso.",
+  "admin/admin.app.pharma-orders.isConfirmed": "está confirmado.",
   "admin/admin.app.pharma-orders.wasNotConfirmed": "não foi confirmado.",
   "admin/admin.app.pharma-orders.wasAlreadyConfirmed": "já foi confirmado.",
   "admin/admin.app.pharma-orders.approvedBeforeConfirming": "deve ser aprovado antes de confirmar.",

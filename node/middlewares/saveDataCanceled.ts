@@ -13,11 +13,13 @@ export async function saveDataCanceled(
     const id = documentOfOrder[0]?.id
     const orderId = documentOfOrder[0]?.orderId
     const status = documentOfOrder[0]?.status
+    const invoiceNumber = documentOfOrder[0]?.invoiceNumber
 
     if (status !== 'canceled') {
       const body: SaveDataInMasterDataBody = {
         orderId,
         status: 'canceled',
+        invoiceNumber,
       }
 
       await masterDataClient.updateDocument(id, body)
