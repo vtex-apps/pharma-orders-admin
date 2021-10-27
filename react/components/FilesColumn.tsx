@@ -20,7 +20,7 @@ export default function FilesTable({ orderId }: ProductTableProps) {
   const customApps =
     responseFromGetOrder?.data?.getOrder?.data?.customData?.customApps
 
-  const files = customApps?.find((app: any) => app.id === 'uploadfiles').fields
+  const files = customApps?.find((app: any) => app.id === 'uploadfiles')?.fields
     .data
 
   const filesObject = files && JSON.parse(files.replace(/'/g, '"'))
