@@ -1,0 +1,16 @@
+.success-container {
+  max-width: 1200px;
+  margin: 20px auto;
+}
+
+.error-container {
+  max-width: 1200px;
+  margin: 20px auto;
+  max-height: 8rem;
+  overflow-y: scroll;
+  scroll-behavior: smooth;
+}
+
+.error-container::-webkit-scrollbar {
+  display: none;
+}

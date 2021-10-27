@@ -1,0 +1,10 @@
+type DataCancelOrderResponse {
+  date: String
+  orderId: String
+  receipt: String
+}
+
+type CancelOrderResponse {
+  status: Int
+  data: DataCancelOrderResponse
+}

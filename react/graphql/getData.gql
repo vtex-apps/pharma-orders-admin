@@ -1,0 +1,11 @@
+query getData {
+  getData {
+    status
+    data {
+      id
+      orderId
+      status
+      invoiceNumber
+    }
+  }
+}

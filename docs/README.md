@@ -1,23 +1,50 @@
-# Admin Example
+### Configure
 
-An example admin app that adds a menu button to the admin sidebar and a navigation via parameter example.
+Crear la entidad y el schema:
 
-### How to develop admins
+`[PUT]`
 
-1. Admins always declare routes in `/admin/app/<route>`
+`https://:workspace.vtexcommercestable.com.br/api/dataentities/pharmaOrders/schemas/pharma-orders`
 
-2. Declare the `admin` builder in your manifest
+`HEADER: VtexIdClientAutCookie`
 
-3. When installed, the user navigates to `/admin/<route>`, but your app runs in an iframe that points to `/admin/app/<route>`.
+`BODY:`
 
-4. You can develop directly in the `/admin/app` route for convenience, but don't forget to test it inside the iframe. :)
+```json
+{
+  "properties": {
+    "orderId": {
+      "type": "string",
+      "maxLength": 50,
+      "title": "orderId"
+    },
+    "status": {
+      "type": "string",
+      "maxLength": 50,
+      "title": "status"
+    },
+    "invoiceNumber": {
+      "type": "string",
+      "maxLength": 50,
+      "title": "invoiceNumber"
+    }
+  },
+  "required": ["orderId", "status", "invoiceNumber"],
+  "v-indexed": ["orderId", "status", "invoiceNumber"],
+  "v-security": {
+    "publicJsonSchema": true,
+    "allowGetAll": false,
+    "publicRead": ["orderId", "status", "invoiceNumber"],
+    "publicWrite": ["orderId", "status", "invoiceNumber"],
+    "publicFilter": ["orderId", "status", "invoiceNumber"]
+  }
+}
+```
 
-### Quickstart
+Configurar el orders-broadcast para redirigir el feed de ordenes al workspace donde se este trabajando
+`https://:workspace-.myvtex.com/admin/apps/vtex.orders-broadcast/setup`
 
-1. Clone this repo
+Ingresar el id de la categoria de Medicamentos
+`https://:workspace--:account.myvtex.com/admin/apps/vtexarg.pharma-orders-admin/setup`
 
-2. `yarn --cwd react/` for code completion
-
-3. `vtex link`
-
-4. Navigate to `workspace--account.myvtex.com/admin/app/example`
+`https://pharmaorders--gbonacchi.myvtex.com/admin/apps/vtexarg.pharma-orders-admin/setup`

@@ -1,0 +1,12 @@
+.magnifier-image {
+  display: block;
+}
+
+.magnifier {
+  width: inherit !important;
+}
+
+.wrapMagnifier {
+  display: flex;
+  justify-content: center;
+}

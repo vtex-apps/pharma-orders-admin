@@ -1,10 +1,9 @@
 {
-  "name": "admin-example",
-  "vendor": "vtex",
-  "version": "0.0.12",
-  "title": "Example Admin App",
+  "vendor": "vtexarg",
+  "name": "pharma-orders-admin",
+  "version": "0.1.0",
+  "title": "Pharma Orders Admin",
   "description": "",
-  "mustUpdateAt": "2022-08-28",
   "scripts": {
     "postreleasy": "vtex publish"
   },
@@ -15,7 +14,86 @@
     "react": "3.x",
     "admin": "0.x",
     "messages": "1.x",
-    "docs": "0.x"
+    "docs": "0.x",
+    "node": "6.x",
+    "graphql": "1.x"
   },
+  "settingsSchema": {
+    "title": "Pharma Orders Broadcast",
+    "type": "object",
+    "properties": {
+      "idCategoriaMedicamentos": {
+        "title": "Id de Categoria Medicamentos",
+        "type": "number"
+      }
+    }
+  },
+  "billingOptions": {
+    "support": {
+      "url": "https://support.vtex.com/hc/requests"
+    },
+    "type": "free",
+    "availableCountries": ["*"]
+  },
+  "policies": [
+    {
+      "name": "outbound-access",
+      "attrs": {
+        "host": "{{account}}.myvtex.com",
+        "path": "/*"
+      }
+    },
+    {
+      "name": "outbound-access",
+      "attrs": {
+        "host": "portal.vtexcommercestable.com.br",
+        "path": "/api/*"
+      }
+    },
+    {
+      "name": "outbound-access",
+      "attrs": {
+        "host": "portal.vtexcommercebeta.com.br",
+        "path": "/api/*"
+      }
+    },
+    {
+      "name": "outbound-access",
+      "attrs": {
+        "host": "{{account}}.vtexcommercestable.com.br",
+        "path": "/api/*"
+      }
+    },
+    {
+      "name": "Get_Account_By_Identifier"
+    },
+    {
+      "name": "vbase-read-write"
+    },
+    {
+      "name": "vbase-read-write"
+    },
+    {
+      "name": "OMSViewer"
+    },
+    {
+      "name": "AcessaTodosPedidos"
+    },
+    {
+      "name": "ADMIN_DS"
+    },
+    {
+      "name": "POWER_USER_DS"
+    },
+    {
+      "name": "AdminPortal"
+    },
+    {
+      "name": "colossus-fire-event"
+    },
+    {
+      "name": "colossus-write-logs"
+    }
+  ],
   "$schema": "https://raw.githubusercontent.com/vtex/node-vtex-api/master/gen/manifest.schema"
 }

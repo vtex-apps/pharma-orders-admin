@@ -1,0 +1,13 @@
+query getOrderDataToInvoice($orderId: String) {
+  getOrder(orderId: $orderId) {
+    status
+    data {
+      value
+      items {
+        id
+        quantity
+        price
+      }
+    }
+  }
+}

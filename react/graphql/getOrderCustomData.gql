@@ -1,0 +1,15 @@
+query getOrderCustomData($orderId: String) {
+  getOrder(orderId: $orderId) {
+    status
+    data {
+      customData {
+        customApps {
+          fields {
+            data
+          }
+          id
+        }
+      }
+    }
+  }
+}

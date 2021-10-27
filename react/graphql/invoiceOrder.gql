@@ -1,0 +1,5 @@
+mutation invoiceOrder($orderId: String, $bodyInvoice: BodyInvoiceOrder) {
+  invoiceOrder(orderId: $orderId, bodyInvoice: $bodyInvoice) {
+    status
+  }
+}

@@ -1,0 +1,41 @@
+type OrderItems {
+  id: String
+  productId: String
+  quantity: Int
+  name: String
+  price: Int
+}
+
+type Fields {
+  data: String
+}
+
+type CustomApps {
+  fields: Fields
+  id: String
+  major: Int
+}
+
+type CustomData {
+  customApps: [CustomApps]
+}
+
+type Package {
+  invoiceNumber: String
+}
+
+type PackageAttachment {
+  packages: [Package]
+}
+
+type DataGetOrderResponse {
+  items: [OrderItems]
+  value: Int
+  customData: CustomData
+  packageAttachment: PackageAttachment
+}
+
+type GetOrderResponse {
+  status: Int
+  data: DataGetOrderResponse
+}

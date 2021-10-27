@@ -1,0 +1,13 @@
+query getOrderItems($orderId: String) {
+  getOrder(orderId: $orderId) {
+    status
+    data {
+      items {
+        id
+        productId
+        quantity
+        name
+      }
+    }
+  }
+}

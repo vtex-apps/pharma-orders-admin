@@ -1,0 +1,18 @@
+{
+  "memory": 512,
+  "ttl": 10,
+  "timeout": 600,
+  "minReplicas": 10,
+  "maxReplicas": 40,
+  "workers": 3,
+  "events": {
+    "orderCreated": {
+      "sender": "vtex.orders-broadcast",
+      "topics": ["order-created"]
+    },
+    "orderCanceled": {
+      "sender": "vtex.orders-broadcast",
+      "topics": ["canceled"]
+    }
+  }
+}

@@ -1,0 +1,8 @@
+query getOrderStatus($orderId: String) {
+  getOrderStatus(orderId: $orderId) {
+    status
+    data {
+      status
+    }
+  }
+}
